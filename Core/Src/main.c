@@ -107,20 +107,21 @@ int main(void)
 
 
   //Initialize TMP100 by writing to config register
-  /*
+
   uint8_t config[2];
 
   config[0] = TMP100_CONFIG_REGISTER;  // Register pointer
   config[1] = 0x60;                    // Configuration MSB (12-bit resolution, one-shot mode off, etc.)
 
   HAL_I2C_Master_Transmit(&hi2c1, TMP100_ADDRESS, config, 2, HAL_MAX_DELAY);
-  */
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  /*
 			 //Code to check if Sensor is connected and working
 			 ret = HAL_I2C_IsDeviceReady(&hi2c1, INA226_ADDRESS, 10, HAL_MAX_DELAY);
 			 if ( ret != HAL_OK ) {
@@ -130,8 +131,8 @@ int main(void)
 				 strcpy((char*)buf, "Success\r\n");
 			 HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
 
+      */
 
-/*
 	     //Switch Sensor to Temperature Registor for later reading
 	  	 buf[0] = TMP100_TEMP_REGISTER;
 	     ret = HAL_I2C_Master_Transmit(&hi2c1, TMP100_ADDRESS, buf, 1, HAL_MAX_DELAY);
@@ -179,7 +180,7 @@ int main(void)
 
 	     // Wait
 	     HAL_Delay(500);
-*/
+
 
     /* USER CODE END WHILE */
 
