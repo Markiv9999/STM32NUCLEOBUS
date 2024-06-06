@@ -29,9 +29,10 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l4xx_hal.h"
 
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "I2CTMP100.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
