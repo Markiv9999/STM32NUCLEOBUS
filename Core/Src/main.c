@@ -15,7 +15,6 @@
   *
   ******************************************************************************
   */
-extern "C"{
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -24,8 +23,6 @@ extern "C"{
 /* USER CODE BEGIN Includes */
 #include <string.h>
 #include <stdio.h>
-#include "I2CTMP100.h"
-}
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -35,11 +32,10 @@ extern "C"{
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-/*#define TMP100_ADDRESS 0x48<<1
+#define TMP100_ADDRESS 0x48<<1
 #define INA226_ADDRESS 0x40<<1   // TMP100 I2C address shifted for HAL library
 #define TMP100_CONFIG_REGISTER 0x01
 #define TMP100_TEMP_REGISTER 0x00
-*/
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -80,7 +76,7 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
 	HAL_StatusTypeDef ret;
-	uint8_t buf[2];
+	uint8_t buf[12];
 	int16_t val;
 	double temp_c;
   /* USER CODE END 1 */
@@ -112,15 +108,13 @@ int main(void)
 
   //Initialize TMP100 by writing to config register
 
-  /*uint8_t config[2];
+  uint8_t config[2];
 
   config[0] = TMP100_CONFIG_REGISTER;  // Register pointer
   config[1] = 0x60;                    // Configuration MSB (12-bit resolution, one-shot mode off, etc.)
 
-  HAL_I2C_Master_Transmit(&hi2c1, TMP100_ADDRESS, config, 2, HAL_MAX_DELAY);*/
+  HAL_I2C_Master_Transmit(&hi2c1, TMP100_ADDRESS, config, 2, HAL_MAX_DELAY);
 
-  I2CTMP100_H_ TestSensor(0x48<<1,hi2c1);
-  TestSensor.setConfigReg();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -138,13 +132,7 @@ int main(void)
 			 HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
 
       */
-	   temp_c=TestSensor.ReadTempReg();
 
-	   sprintf((char*)buf,
-	   	               "%u.%u C\r\n",
-	   	               ((unsigned int)temp_c / 100),
-	   	               ((unsigned int)temp_c % 100));
-	  /*
 	     //Switch Sensor to Temperature Registor for later reading
 	  	 buf[0] = TMP100_TEMP_REGISTER;
 	     ret = HAL_I2C_Master_Transmit(&hi2c1, TMP100_ADDRESS, buf, 1, HAL_MAX_DELAY);
@@ -191,9 +179,9 @@ int main(void)
 	     HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
 
 	     // Wait
-	    // HAL_Delay(500);
+	     HAL_Delay(500);
 
-*/
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -266,7 +254,7 @@ static void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.Timing = 0x00702991;
+  hi2c1.Init.Timing = 0x10909CEC;
   hi2c1.Init.OwnAddress1 = 0;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
