@@ -21,6 +21,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <string.h>
+#include <stdio.h>
+#include "stm32l4xx_hal.h"
+#include <TMP100.h>
 
 /* USER CODE END Includes */
 
@@ -31,7 +35,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define TMP_100_Address 0x48 << 1
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -94,13 +98,20 @@ int main(void)
   MX_USART2_UART_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
+  //Declare and Initialize Sensor (with UART object to enable print)
+  TMP100 TestSensor(TMP_100_Address,hi2c1,huart2);
+
+  //Set Configuration of Sensor (no arguments = default)
+  TestSensor.Set_Config(0x60);
+
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
-  {		HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
+  {
+	  TestSensor.Get_Temperature();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

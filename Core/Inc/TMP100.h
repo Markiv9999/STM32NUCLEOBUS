@@ -10,6 +10,7 @@
 
 //User defines here
 #define TMP_100_Config_Registry_Address 0x01
+
 #define TMP_100_Temp_Registry_Address 0x00
 //
 
@@ -21,19 +22,38 @@ extern "C" {
 #include "stm32l4xx_hal.h"
 #include "I2C.h"
 
+
 //End Includes
 
 class TMP100 {
 
 private:
-I2C Connection;
+
+	I2C i2c;
+	HAL_StatusTypeDef ret;
+	char Error_Msg[15];
+	//Temperature in Celsius
+	double Temp_C;
+	//Temperature in signed bits
+	int16_t val;
+
+
+	//huart is to be initialized if the print functions are to be used
+	UART_HandleTypeDef huart;
+	//Printflag will be set true when huart is initialized
+	bool Print_Flag=false;
 
 public:
 	TMP100();
+	TMP100(uint8_t add,I2C_HandleTypeDef hi2c);
+	TMP100(uint8_t add,I2C_HandleTypeDef hi2c, UART_HandleTypeDef huartt);
 
-	void init(uint8_t add,I2C_HandleTypeDef hi2c);
-	void setconfig(uint8_t settings);
-	void gettemperature();
+	void Init(uint8_t add,I2C_HandleTypeDef hi2c);
+	void Init(uint8_t add,I2C_HandleTypeDef hi2c,UART_HandleTypeDef huartt);
+	void Set_Config(uint8_t settings = 0x60);
+	double Get_Temperature();
+
+
 
 	virtual ~TMP100();
 };

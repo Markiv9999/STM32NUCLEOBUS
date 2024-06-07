@@ -20,7 +20,7 @@ HAL_StatusTypeDef I2C::Transmit(uint8_t *bits, int no_of_bits)
 		Tempbits[i]=*(bits+i);
 	}
    */
-	HAL_I2C_Master_Transmit(& hi2c1 , address, bits, 2, waitdelay);
+	return HAL_I2C_Master_Transmit(& hi2c1 , address, bits, no_of_bits, Wait_Delay);
 }
 
 void I2C::Init_I2C(uint8_t add,I2C_HandleTypeDef hi2c)
@@ -29,17 +29,24 @@ void I2C::Init_I2C(uint8_t add,I2C_HandleTypeDef hi2c)
 	hi2c1=hi2c;
 }
 
+//void I2C::initprint(UART_HandleTypeDef huartt)
+//{
+//	huart=huartt;
+//	printflag=true;
+//}
+
 
 void I2C::Set_Wait_Delay(uint32_t delay)
 {
-waitdelay=delay;
+Wait_Delay=delay;
 }
 
 HAL_StatusTypeDef I2C::Receive_2_Buffer(int noofbytes)
 {
-	ret = HAL_I2C_Master_Receive(& hi2c1, address, I2C_Buffer, noofbytes, HAL_MAX_DELAY);
-	return ret;
+	return  HAL_I2C_Master_Receive(& hi2c1, address, I2C_Buffer, noofbytes, HAL_MAX_DELAY);
+
 }
+
 
 I2C::~I2C() {
 	// TODO Auto-generated destructor stub

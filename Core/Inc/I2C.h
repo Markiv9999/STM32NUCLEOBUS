@@ -14,6 +14,8 @@ extern "C" {
 
 //Includes here
 #include "stm32l4xx_hal.h"
+#include <string.h>
+#include <stdio.h>
 //Includes End
 
 //Defines Here
@@ -23,23 +25,34 @@ extern "C" {
 class I2C {
 
 uint8_t address;
+
+uint32_t Wait_Delay= HAL_MAX_DELAY;
+
+//hi2c1 needs to be initiated.
 I2C_HandleTypeDef hi2c1;
-uint32_t waitdelay= HAL_MAX_DELAY;
-HAL_StatusTypeDef ret;
+
 
 public:
+	//Functions will set read value to buffer.
 	uint8_t I2C_Buffer[12];
+
+
 
 
 	I2C();
 
+	//Initialization Functions
 	void Init_I2C(uint8_t add,I2C_HandleTypeDef hi2c);
-
+	//Optional Initializations
+	//void initprint(UART_HandleTypeDef huartt);
 	void Set_Wait_Delay(uint32_t delay);
 
-	void Transmit(uint8_t *bits, int no_of_bits);
-
+	//Operational Functions
+	HAL_StatusTypeDef Transmit(uint8_t bits[12], int no_of_bits);
 	HAL_StatusTypeDef Receive_2_Buffer(int noofbytes);
+
+	//Print Functions
+	//void printretflag(UART_HandleTypeDef huart);
 
 	virtual ~I2C();
 };
