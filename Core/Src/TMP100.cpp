@@ -105,7 +105,8 @@ double TMP100::Get_Temperature()
 				   HAL_UART_Transmit(&huart, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
 
 }
-return Temp_C;
+	//Undoing convertion to return correct value
+return (Temp_C/100);
 }
 
 

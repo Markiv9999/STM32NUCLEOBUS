@@ -97,9 +97,14 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_I2C1_Init();
+  char Error_Msg[15];
   /* USER CODE BEGIN 2 */
   //Declare and Initialize Sensor (with UART object to enable print)
   TMP100 TestSensor(TMP_100_Address,hi2c1,huart2);
+
+
+  //Declare and Initialize Sensor (Without print)
+  //TMP100 TestSensor(TMP_100_Address,hi2c1);
 
   //Set Configuration of Sensor (no arguments = default)
   TestSensor.Set_Config(0x60);
@@ -110,8 +115,10 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
-  {
-	  TestSensor.Get_Temperature();
+  { double temp;
+temp=TestSensor.Get_Temperature();
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
