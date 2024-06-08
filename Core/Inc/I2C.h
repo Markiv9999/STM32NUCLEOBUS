@@ -51,6 +51,8 @@ public:
 	HAL_StatusTypeDef Transmit(uint8_t bits[12], int no_of_bits);
 	HAL_StatusTypeDef Receive_2_Buffer(int noofbytes);
 
+	HAL_StatusTypeDef Transmit_DMA(uint8_t bits[12], int no_of_bits);
+	HAL_StatusTypeDef Receive_2_Buffer_DMA(int noofbytes);
 	//Print Functions
 	//void printretflag(UART_HandleTypeDef huart);
 

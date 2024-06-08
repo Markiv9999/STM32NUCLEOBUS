@@ -53,6 +53,9 @@ public:
 	void Set_Config(uint8_t settings = 0x60);
 	double Get_Temperature();
 
+	void Set_Config_DMA(uint8_t settings = 0x60);
+	double Get_Temperature_DMA();
+
 
 
 	virtual ~TMP100();
