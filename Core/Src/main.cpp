@@ -61,11 +61,7 @@ static void MX_DMA_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
-void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *hi2c);
-void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c);
-void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c);
-void DMA1_Channel6_IRQHandler(void);
-void DMA1_Channel7_IRQHandler(void);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -115,7 +111,9 @@ int main(void)
   double temp;
   //Set Configuration of Sensor (no arguments = default)
   TestSensor.Set_Config_DMA(0x60);
-
+  while (HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY)
+      {
+      }
   TestSensor.Set_Config_DMA(0x60);
   TestSensor.Set_Config_DMA(0x60);
   TestSensor.Set_Config_DMA(0x60);
@@ -327,14 +325,6 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-void DMA1_Channel6_IRQHandler(void)
-{
-	  HAL_DMA_IRQHandler(&hdma_i2c1_tx);
-}
-void DMA1_Channel7_IRQHandler(void)
-{
-	  HAL_DMA_IRQHandler(&hdma_i2c1_rx);
-}
 
 
 /* USER CODE END 4 */
