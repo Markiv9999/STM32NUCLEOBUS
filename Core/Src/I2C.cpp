@@ -12,14 +12,21 @@ I2C::I2C() {
 
 }
 
-HAL_StatusTypeDef I2C::Transmit(uint8_t *bits, int no_of_bits)
+HAL_StatusTypeDef I2C::Transmit(uint8_t *bits, int no_of_bytes)
 {
-	return HAL_I2C_Master_Transmit(& hi2c1 , address, bits, no_of_bits, Wait_Delay);
+	return HAL_I2C_Master_Transmit(& hi2c1 , address, bits, no_of_bytes, Wait_Delay);
 }
 
-HAL_StatusTypeDef I2C::Transmit_DMA(uint8_t *bits, int no_of_bits)
+HAL_StatusTypeDef I2C::Transmit_DMA(uint8_t *bits, int no_of_bytes)
 {
-	return HAL_I2C_Master_Transmit_DMA(&hi2c1 , address, bits, no_of_bits);
+	/* if(HAL_I2C_Master_Transmit_DMA(&hi2c1 , address, bits, no_of_bytes)!= HAL_OK)
+	 {
+		 return HAL_ERROR;
+	 }
+
+	 return HAL_OK;*/
+
+	return HAL_I2C_Master_Transmit_DMA(&hi2c1 , address, bits, no_of_bytes);
 }
 
 
@@ -41,14 +48,15 @@ void I2C::Set_Wait_Delay(uint32_t delay)
 Wait_Delay=delay;
 }
 
-HAL_StatusTypeDef I2C::Receive_2_Buffer(int noofbytes)
+HAL_StatusTypeDef I2C::Receive_2_Buffer(int no_of_bytes)
 {
-	return  HAL_I2C_Master_Receive(& hi2c1, address, I2C_Buffer, noofbytes, Wait_Delay);
+	return  HAL_I2C_Master_Receive(& hi2c1, address, I2C_Buffer, no_of_bytes, Wait_Delay);
 }
 
-HAL_StatusTypeDef I2C::Receive_2_Buffer_DMA(int noofbytes)
+HAL_StatusTypeDef I2C::Receive_2_Buffer_DMA(int no_of_bytes)
 {
-	return  HAL_I2C_Master_Receive_DMA(&hi2c1, address, I2C_Buffer, noofbytes);
+	return  HAL_I2C_Master_Receive_DMA(&hi2c1, address, I2C_Buffer, no_of_bytes);
+
 }
 
 

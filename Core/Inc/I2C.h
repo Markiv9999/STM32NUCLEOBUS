@@ -29,13 +29,13 @@ uint8_t address;
 uint32_t Wait_Delay= HAL_MAX_DELAY;
 
 //hi2c1 needs to be initiated.
-I2C_HandleTypeDef hi2c1;
+
 
 
 public:
 	//Functions will set read value to buffer.
 	uint8_t I2C_Buffer[12];
-
+	I2C_HandleTypeDef hi2c1;
 
 
 
@@ -48,11 +48,11 @@ public:
 	void Set_Wait_Delay(uint32_t delay);
 
 	//Operational Functions
-	HAL_StatusTypeDef Transmit(uint8_t bits[12], int no_of_bits);
-	HAL_StatusTypeDef Receive_2_Buffer(int noofbytes);
+	HAL_StatusTypeDef Transmit(uint8_t bits[12], int no_of_bytes);
+	HAL_StatusTypeDef Receive_2_Buffer(int no_of_bytes);
 
-	HAL_StatusTypeDef Transmit_DMA(uint8_t bits[12], int no_of_bits);
-	HAL_StatusTypeDef Receive_2_Buffer_DMA(int noofbytes);
+	HAL_StatusTypeDef Transmit_DMA(uint8_t bits[12], int no_of_bytes);
+	HAL_StatusTypeDef Receive_2_Buffer_DMA(int no_of_bytes);
 	//Print Functions
 	//void printretflag(UART_HandleTypeDef huart);
 

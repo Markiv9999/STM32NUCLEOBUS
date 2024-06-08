@@ -45,6 +45,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
+DMA_HandleTypeDef hdma_i2c1_rx;
+DMA_HandleTypeDef hdma_i2c1_tx;
 
 UART_HandleTypeDef huart2;
 
@@ -55,10 +57,15 @@ UART_HandleTypeDef huart2;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
-
+void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *hi2c);
+void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c);
+void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c);
+void DMA1_Channel6_IRQHandler(void);
+void DMA1_Channel7_IRQHandler(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -95,31 +102,34 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
   MX_I2C1_Init();
-  char Error_Msg[15];
   /* USER CODE BEGIN 2 */
   //Declare and Initialize Sensor (with UART object to enable print)
-  //TMP100 TestSensor(TMP_100_Address,hi2c1,huart2);
+  TMP100 TestSensor(TMP_100_Address,hi2c1,huart2);
 
 
   //Declare and Initialize Sensor (Without print)
   //TMP100 TestSensor(TMP_100_Address,hi2c1);
-
+  double temp;
   //Set Configuration of Sensor (no arguments = default)
-  //TestSensor.Set_Config_DMA(0x60);
+  TestSensor.Set_Config_DMA(0x60);
 
-
+  TestSensor.Set_Config_DMA(0x60);
+  TestSensor.Set_Config_DMA(0x60);
+  TestSensor.Set_Config_DMA(0x60);
+  temp=TestSensor.Get_Temperature_DMA();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
-  { //double temp;
+  {
   	//temp=TestSensor.Get_Temperature_DMA();
-	  HAL_I2C_Master_Transmit_DMA(&hi2c1,20,TX_Buffer,1); //Sending in DMA mode
-	  HAL_Delay(100);
 
+  	HAL_Delay(1000);
+  	//TestSensor.Set_Config_DMA(0x60);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -260,6 +270,25 @@ static void MX_USART2_UART_Init(void)
 }
 
 /**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel6_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
+  /* DMA1_Channel7_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel7_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel7_IRQn);
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -298,6 +327,16 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
+void DMA1_Channel6_IRQHandler(void)
+{
+	  HAL_DMA_IRQHandler(&hdma_i2c1_tx);
+}
+void DMA1_Channel7_IRQHandler(void)
+{
+	  HAL_DMA_IRQHandler(&hdma_i2c1_rx);
+}
+
+
 /* USER CODE END 4 */
 
 /**
@@ -312,6 +351,10 @@ void Error_Handler(void)
   while (1)
   {
   }
+
+
+
+
   /* USER CODE END Error_Handler_Debug */
 }
 
