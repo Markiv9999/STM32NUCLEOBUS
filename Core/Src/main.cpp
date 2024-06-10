@@ -110,23 +110,25 @@ int main(void)
   //TMP100 TestSensor(TMP_100_Address,hi2c1);
   double temp;
   //Set Configuration of Sensor (no arguments = default)
-  TestSensor.Set_Config_DMA(0x60);
-  while (HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY)
+  TestSensor.Set_Config(0x60);
+
+  /*while (HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY)
       {
       }
   TestSensor.Set_Config_DMA(0x60);
   TestSensor.Set_Config_DMA(0x60);
   TestSensor.Set_Config_DMA(0x60);
-  temp=TestSensor.Get_Temperature_DMA();
+  temp=TestSensor.Get_Temperature_DMA();*/
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-  	//temp=TestSensor.Get_Temperature_DMA();
+  	temp=TestSensor.Get_Temperature();
+  	HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_5);
+  	HAL_Delay (100);   /* Insert delay 100 ms */
 
-  	HAL_Delay(1000);
   	//TestSensor.Set_Config_DMA(0x60);
     /* USER CODE END WHILE */
 
