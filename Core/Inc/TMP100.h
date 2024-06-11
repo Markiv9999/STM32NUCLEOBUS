@@ -29,9 +29,13 @@ class TMP100 {
 
 private:
 
+
 	I2C i2c;
-	HAL_StatusTypeDef ret;
-	char Error_Msg[15];
+	I2C::STATUS ret;
+
+	//Define a class buffer according to peripheral
+	uint8_t I2C_Buffer[2];
+
 	//Temperature in Celsius
 	double Temp_C;
 	//Temperature in signed bits
@@ -45,14 +49,12 @@ private:
 
 public:
 
-	TMP100( I2C a(int I2CInstanceNo, int mode, uint32_t delay));
+	TMP100(int I2CInstanceNo, int mode, uint32_t delay, uint8_t tempaddress);
 
 
-	void Set_Config(uint8_t settings = 0x60);
-	double Get_Temperature();
+	I2C::STATUS Set_Config(uint8_t settings = 0x60);
+	I2C::STATUS Get_Temperature(double &temp_c);
 
-	void Set_Config_DMA(uint8_t settings = 0x60);
-	double Get_Temperature_DMA();
 
 
 

@@ -89,7 +89,7 @@ I2C::I2C(int I2CInstanceNo, int mode, uint32_t delay) {
 
 }
 
-I2C::I2C_STATUS I2C::Transmit(uint8_t *bits, int no_of_bytes)
+I2C::STATUS I2C::Transmit(uint8_t (&bits)[], int no_of_bytes)
 {
 	HAL_StatusTypeDef temp;
 	temp= HAL_I2C_Master_Transmit(&hi2c , address, bits, no_of_bytes, Wait_Delay);
@@ -97,23 +97,23 @@ I2C::I2C_STATUS I2C::Transmit(uint8_t *bits, int no_of_bytes)
 	switch(temp)
 	{
 		case HAL_OK:
-			return I2C_STATUS::OK;
+			return STATUS::OK;
 			break;
 
 		case HAL_ERROR:
-			return I2C_STATUS::ERROR;
+			return STATUS::ERROR;
 			break;
 
 		case HAL_BUSY:
-			return I2C_STATUS::BUSY;
+			return STATUS::BUSY;
 			break;
 
 		case HAL_TIMEOUT:
-			return I2C_STATUS::TIMEOUT;
+			return STATUS::TIMEOUT;
 			break;
 	}
 
-	return I2C_STATUS::SHOULD_NOT_HAPPEN;
+	return STATUS::SHOULD_NOT_HAPPEN;
 }
 /*
 void I2C::Transmit_DMA(uint8_t *bits, int no_of_bytes)
@@ -145,7 +145,7 @@ void I2C::Error_Handler()
 
 
 
-I2C::I2C_STATUS I2C::Receive_2_Buffer(uint8_t *I2C_Buffer,int no_of_bytes)
+I2C::STATUS I2C::Receive_2_Buffer(uint8_t (&I2C_Buffer)[],int no_of_bytes)
 {
 	HAL_StatusTypeDef temp;
 		temp= HAL_I2C_Master_Receive(&hi2c, address, I2C_Buffer, no_of_bytes, Wait_Delay);
@@ -153,23 +153,23 @@ I2C::I2C_STATUS I2C::Receive_2_Buffer(uint8_t *I2C_Buffer,int no_of_bytes)
 		switch(temp)
 		{
 			case HAL_OK:
-				return I2C_STATUS::OK;
+				return STATUS::OK;
 				break;
 
 			case HAL_ERROR:
-				return I2C_STATUS::ERROR;
+				return STATUS::ERROR;
 				break;
 
 			case HAL_BUSY:
-				return I2C_STATUS::BUSY;
+				return STATUS::BUSY;
 				break;
 
 			case HAL_TIMEOUT:
-				return I2C_STATUS::TIMEOUT;
+				return STATUS::TIMEOUT;
 				break;
 		}
 
-		return I2C_STATUS::SHOULD_NOT_HAPPEN;
+		return STATUS::SHOULD_NOT_HAPPEN;
 }
 
 

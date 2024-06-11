@@ -28,6 +28,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l4xx_hal.h"
+#include "TMP100.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -72,11 +73,7 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN Private defines */
 
-enum class I2C_ModeTypeDef{
-	I2C_NORMAL,
-	I2C_FAST,
-	I2C_FASTPLUS
-};
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
