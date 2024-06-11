@@ -7,36 +7,12 @@
 
 #include "TMP100.h"
 
-TMP100::TMP100() {
+TMP100::TMP100(I2C a(int I2CInstanceNo, int mode, uint32_t delay)) : i2c(a)
 	// TODO Auto-generated constructor stub
 
 }
 
-TMP100::TMP100(uint8_t add,I2C_HandleTypeDef hi2c)
-{
-	// TODO Constructor with Init Arguments
-	Init(add, hi2c);
-}
 
-void TMP100::Init(uint8_t add,I2C_HandleTypeDef hi2c)
-{
-	i2c.Init_I2C(add, hi2c);
-
-}
-
-TMP100::TMP100(uint8_t add,I2C_HandleTypeDef hi2c, UART_HandleTypeDef huartt)
-{
-
-	Init(add, hi2c, huartt);
-}
-
-
-void TMP100::Init(uint8_t add,I2C_HandleTypeDef hi2c, UART_HandleTypeDef huartt)
-{
-	i2c.Init_I2C(add, hi2c);
-	huart=huartt;
-	Print_Flag=true;
-}
 
 void TMP100::Set_Config(uint8_t settings)
 {

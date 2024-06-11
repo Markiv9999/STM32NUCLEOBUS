@@ -44,12 +44,10 @@ private:
 	bool Print_Flag=false;
 
 public:
-	TMP100();
-	TMP100(uint8_t add,I2C_HandleTypeDef hi2c);
-	TMP100(uint8_t add,I2C_HandleTypeDef hi2c, UART_HandleTypeDef huartt);
 
-	void Init(uint8_t add,I2C_HandleTypeDef hi2c);
-	void Init(uint8_t add,I2C_HandleTypeDef hi2c,UART_HandleTypeDef huartt);
+	TMP100( I2C a(int I2CInstanceNo, int mode, uint32_t delay));
+
+
 	void Set_Config(uint8_t settings = 0x60);
 	double Get_Temperature();
 

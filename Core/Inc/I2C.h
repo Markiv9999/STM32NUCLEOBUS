@@ -28,33 +28,34 @@ uint8_t address;
 
 uint32_t Wait_Delay= HAL_MAX_DELAY;
 
-//hi2c1 needs to be initiated.
+I2C_HandleTypeDef hi2c;
+
+enum class I2C_STATUS
+{
+	OK,
+
+	ERROR,
+
+	BUSY,
+
+	TIMEOUT,
+
+	SHOULD_NOT_HAPPEN
+};
 
 
 
 public:
-	//Functions will set read value to buffer.
-	uint8_t I2C_Buffer[12];
-	I2C_HandleTypeDef hi2c1;
 
+	I2C( int I2CInstanceNo, int mode, uint32_t delay=HAL_MAX_DELAY );
 
-
-	I2C();
-
-	//Initialization Functions
-	void Init_I2C(uint8_t add,I2C_HandleTypeDef hi2c);
-	//Optional Initializations
-	//void initprint(UART_HandleTypeDef huartt);
-	void Set_Wait_Delay(uint32_t delay);
+	//TBD, Shouldnt be needed
+	void Error_Handler();
 
 	//Operational Functions
-	HAL_StatusTypeDef Transmit(uint8_t bits[12], int no_of_bytes);
-	HAL_StatusTypeDef Receive_2_Buffer(int no_of_bytes);
+	I2C_STATUS Transmit(uint8_t bits[12], int no_of_bytes);
+	I2C_STATUS Receive_2_Buffer(uint8_t *I2C_Buffer,int no_of_bytes);
 
-	HAL_StatusTypeDef Transmit_DMA(uint8_t bits[12], int no_of_bytes);
-	HAL_StatusTypeDef Receive_2_Buffer_DMA(int no_of_bytes);
-	//Print Functions
-	//void printretflag(UART_HandleTypeDef huart);
 
 	virtual ~I2C();
 };
