@@ -29,9 +29,9 @@ class I2C {
 
 uint32_t Wait_Delay= HAL_MAX_DELAY;
 
-I2C_HandleTypeDef hi2c;
+I2C_HandleTypeDef hi2c1;
 
-
+UART_HandleTypeDef huart;
 
 
 public:

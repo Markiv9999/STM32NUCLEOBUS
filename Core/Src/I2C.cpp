@@ -9,37 +9,46 @@
 //Select I2C instance no from {1,2,3} (STM32NucleoL476 has 3 instances I2C1, I2C2, I2C3) and mode from {1=normal(100kbps), 2=fastmode(400kbps), 3=fastmodeplus(1Mbps)}
 I2C::I2C(int I2CInstanceNo, int mode,UART_HandleTypeDef huart2, uint32_t delay ) {
 	char* Error_Msg[25];
-	strcpy((char*)Error_Msg, "At Constructor\r\n");
+	sprintf((char*)Error_Msg,
+									"%u, %u \r\n",
+									((int)I2CInstanceNo),
+									((int)mode));
 	HAL_UART_Transmit(&huart2, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
-
+	huart=huart2;
 	  //Select appropriate Instance
       switch(I2CInstanceNo)
 		  {
 		  	  case 1:
-		  		  hi2c.Instance = I2C1;
+		  		sprintf((char*)Error_Msg,
+		  											"instance set succefully \r\n",
+		  											((int)I2CInstanceNo),
+		  											((int)mode));
+		  		  hi2c1.Instance = I2C1;
+		  		HAL_UART_Transmit(&huart2, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
 		  		  break;
 
 		  	  case 2:
-		  		  hi2c.Instance = I2C2;
+		  		  hi2c1.Instance = I2C2;
 		  		  break;
 
 		  	  case 3:
-		  		  hi2c.Instance = I2C3;
+		  		  hi2c1.Instance = I2C3;
 		  		  break;
 		  }
+
       //Select Appropriate mode
       switch(mode)
      		  {	  //Select correct timing - here they are set to ones provided by STM32CubeIde
      		  	  case 1:
-     		  		  hi2c.Init.Timing = 0x10909CEC;
+     		  		  hi2c1.Init.Timing = 0x10909CEC;
      		  		  break;
 
      		  	  case 2:
-     		  		  hi2c.Init.Timing = 0x00702991;
+     		  		  hi2c1.Init.Timing = 0x00702991;
      		  		  break;
 
      		  	  case 3:
-     		  		  hi2c.Init.Timing = 0x00300F33;
+     		  		  hi2c1.Init.Timing = 0x00300F33;
      		  		  //Activate FastModePlus on selected I2C Instance
      		  		  switch(I2CInstanceNo)
      		  				  {
@@ -58,35 +67,54 @@ I2C::I2C(int I2CInstanceNo, int mode,UART_HandleTypeDef huart2, uint32_t delay )
 
      		  		  break;
 
-     		  		  Wait_Delay=delay;
+
 
 
      		  }
 
       //Set Other Parameters common to all modes and instances
-	  hi2c.Init.OwnAddress1 = 0;
-	  hi2c.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-	  hi2c.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-	  hi2c.Init.OwnAddress2 = 0;
-	  hi2c.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
-	  hi2c.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-	  hi2c.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-	  if (HAL_I2C_Init(&hi2c) != HAL_OK)
+      Wait_Delay=delay;
+	  hi2c1.Init.OwnAddress1 = 0;
+	  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+	  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+	  hi2c1.Init.OwnAddress2 = 0;
+	  hi2c1.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+	  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+	  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+	  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
 	  {
+		  sprintf((char*)Error_Msg,
+		       		  				  											"Init Failed \r\n",
+		       		  				  											((int)I2CInstanceNo),
+		       		  				  											((int)mode));
+
+		       		  				  		HAL_UART_Transmit(&huart2, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
 	    Error_Handler();
 	  }
 
 	  /** Configure Analogue filter
 	  */
-	  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+	  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
 	  {
+		  sprintf((char*)Error_Msg,
+		 		       		  				  											"Analog Filter Failed",
+		 		       		  				  											((int)I2CInstanceNo),
+		 		       		  				  											((int)mode));
+
+		 		       		  				  		HAL_UART_Transmit(&huart2, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
 	    Error_Handler();
 	  }
 
 	  /** Configure Digital filter
 	  */
-	  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c, 0) != HAL_OK)
+	  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
 	  {
+		  sprintf((char*)Error_Msg,
+		 		       		  				  											"Digital Filter Failed \r\n",
+		 		       		  				  											((int)I2CInstanceNo),
+		 		       		  				  											((int)mode));
+
+		 		       		  				  		HAL_UART_Transmit(&huart2, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
 	    Error_Handler();
 	  }
 
@@ -95,7 +123,7 @@ I2C::I2C(int I2CInstanceNo, int mode,UART_HandleTypeDef huart2, uint32_t delay )
 I2C::STATUS I2C::Transmit(uint8_t (&bits)[], int no_of_bytes)
 {
 	HAL_StatusTypeDef temp;
-	temp= HAL_I2C_Master_Transmit(&hi2c , address, bits, no_of_bytes, Wait_Delay);
+	temp= HAL_I2C_Master_Transmit(&hi2c1 , address, bits, no_of_bytes, Wait_Delay);
 
 	switch(temp)
 	{
@@ -121,14 +149,14 @@ I2C::STATUS I2C::Transmit(uint8_t (&bits)[], int no_of_bytes)
 /*
 void I2C::Transmit_DMA(uint8_t *bits, int no_of_bytes)
 {
-	 if(HAL_I2C_Master_Transmit_DMA(&hi2c , address, bits, no_of_bytes)!= HAL_OK)
+	 if(HAL_I2C_Master_Transmit_DMA(&hi2c1 , address, bits, no_of_bytes)!= HAL_OK)
 	 {
 		 return HAL_ERROR;
 	 }
 
 	 return HAL_OK;
 
-	return HAL_I2C_Master_Transmit_DMA(&hi2c , address, bits, no_of_bytes);
+	return HAL_I2C_Master_Transmit_DMA(&hi2c1 , address, bits, no_of_bytes);
 }
 
 */
@@ -136,7 +164,13 @@ void I2C::Transmit_DMA(uint8_t *bits, int no_of_bytes)
 
 void I2C::Error_Handler()
 {
-	//Shouldnt be needed, TBD
+
+	__disable_irq();
+
+	char* Error_Msg[25];
+		strcpy((char*)Error_Msg, "At Error handler\r\n");
+		HAL_UART_Transmit(&huart, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
+
 }
 
 //void I2C::initprint(UART_HandleTypeDef huartt)
@@ -151,7 +185,7 @@ void I2C::Error_Handler()
 I2C::STATUS I2C::Receive_2_Buffer(uint8_t (&I2C_Buffer)[],int no_of_bytes)
 {
 	HAL_StatusTypeDef temp;
-		temp= HAL_I2C_Master_Receive(&hi2c, address, I2C_Buffer, no_of_bytes, Wait_Delay);
+		temp= HAL_I2C_Master_Receive(&hi2c1, address, I2C_Buffer, no_of_bytes, Wait_Delay);
 
 		switch(temp)
 		{
