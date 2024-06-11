@@ -16,6 +16,7 @@ extern "C" {
 #include "stm32l4xx_hal.h"
 #include <string.h>
 #include <stdio.h>
+#include <main.h>
 //Includes End
 
 //Defines Here
@@ -61,7 +62,7 @@ public:
 
 */
 
-	I2C( int I2CInstanceNo, int mode, uint32_t delay=HAL_MAX_DELAY );
+	I2C( int I2CInstanceNo, int mode,UART_HandleTypeDef huart2, uint32_t delay=HAL_MAX_DELAY );
 
 	//TBD, Shouldnt be needed
 	void Error_Handler();

@@ -98,7 +98,7 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   //Declare and Initialize Sensor
-  TMP100 TestSensor(1, 1, TMP_100_Address );
+  TMP100 TestSensor(1, 1, TMP_100_Address, huart2 );
 
 
   //Set Configuration of Sensor (no arguments = default)

@@ -7,7 +7,7 @@
 
 #include "TMP100.h"
 
-TMP100::TMP100(int I2CInstanceNo, int mode, uint8_t tempaddress, uint32_t delay) : i2c(I2CInstanceNo,mode,delay)
+TMP100::TMP100(int I2CInstanceNo, int mode, uint8_t tempaddress, UART_HandleTypeDef huart2, uint32_t delay) : i2c(I2CInstanceNo,mode,huart2,delay)
 {
 i2c.address=tempaddress;
 }

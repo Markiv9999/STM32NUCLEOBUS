@@ -7,7 +7,10 @@
 
 #include "I2C.h"
 //Select I2C instance no from {1,2,3} (STM32NucleoL476 has 3 instances I2C1, I2C2, I2C3) and mode from {1=normal(100kbps), 2=fastmode(400kbps), 3=fastmodeplus(1Mbps)}
-I2C::I2C(int I2CInstanceNo, int mode, uint32_t delay) {
+I2C::I2C(int I2CInstanceNo, int mode,UART_HandleTypeDef huart2, uint32_t delay ) {
+	char* Error_Msg[25];
+	strcpy((char*)Error_Msg, "At Constructor\r\n");
+	HAL_UART_Transmit(&huart2, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
 
 	  //Select appropriate Instance
       switch(I2CInstanceNo)
