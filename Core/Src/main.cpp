@@ -45,6 +45,10 @@
 
 UART_HandleTypeDef huart2;
 
+
+I2C::STATUS ret;
+char* Error_Msg[25];
+
 /* USER CODE BEGIN PV */
 double temp_c;
 /* USER CODE END PV */
@@ -94,12 +98,22 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   //Declare and Initialize Sensor
-  TMP100 TestSensor(1, 1, TMP_100_Address);
+  TMP100 TestSensor(1, 1, TMP_100_Address );
 
 
   //Set Configuration of Sensor (no arguments = default)
-  TestSensor.Set_Config(0x60);
+  ret=TestSensor.Set_Config(0x60);
+  if ( ret != I2C::STATUS::OK )
+    		     {
+    		       strcpy((char*)Error_Msg, "Error Setting Registry\r\n");
+    		     }
+    			else
+    			{
+    				strcpy((char*)Error_Msg, "Config Success\r\n");
+    			}
 
+    				HAL_UART_Transmit(&huart2, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
+while(1)
   /*while (HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY)
       {
       }
@@ -113,34 +127,23 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
-
   	ret=TestSensor.Get_Temperature(temp_c);
+  	 if ( ret != I2C::STATUS::OK )
+  	    		     {
+  	    		       strcpy((char*)Error_Msg, "Error Getting Temp\r\n");
+  	    		     }
+  	    			else
+  	    			{
 
+						// Convert temperature to decimal format
+						temp_c *= 100;
+						sprintf((char*)Error_Msg,
+								"%u.%u C\r\n",
+								((unsigned int)temp_c / 100),
+								((unsigned int)temp_c % 100));
 
-
-
-  	if ( ret != I2C::o )
-  		     {
-  		       strcpy((char*)Error_Msg, "Error Setting Registry\r\n");
-  		     }
-  			else
-  			{
-  				strcpy((char*)Error_Msg, "Config Success\r\n");
-  			}
-  	if (Print_Flag==true)
-  				HAL_UART_Transmit(&huart, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
-
-
-  	// Convert temperature to decimal format
-  			   			 Temp_C *= 100;
-  			   sprintf((char*)Error_Msg,
-  			   				   "%u.%u C\r\n",
-  			   				   ((unsigned int)Temp_C / 100),
-  			   				   ((unsigned int)Temp_C % 100));
-  			   if (Print_Flag==true)
-  				   HAL_UART_Transmit(&huart, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
-
+						HAL_UART_Transmit(&huart2, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
+  	    			}
   	//TestSensor.Set_Config_DMA(0x60);
     /* USER CODE END WHILE */
 

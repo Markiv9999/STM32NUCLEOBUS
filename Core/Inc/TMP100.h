@@ -49,7 +49,7 @@ private:
 
 public:
 
-	TMP100(int I2CInstanceNo, int mode, uint32_t delay, uint8_t tempaddress);
+	TMP100(int I2CInstanceNo, int mode, uint8_t tempaddress, uint32_t delay=HAL_MAX_DELAY);
 
 
 	I2C::STATUS Set_Config(uint8_t settings = 0x60);
