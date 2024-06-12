@@ -37,10 +37,6 @@ private:
 	uint8_t I2C_Buffer[2];
 
 	//Temperature in Celsius
-<<<<<<< HEAD
-=======
-	double Temp_C;
->>>>>>> parent of 6c0df58 (Working implementation)
 	//Temperature in signed bits
 	int16_t val;
 
@@ -52,11 +48,7 @@ private:
 
 public:
 
-<<<<<<< HEAD
 	TMP100(int I2CInstanceNo, int mode, uint8_t tempaddress,UART_HandleTypeDef huart2 ,  uint32_t delay=HAL_MAX_DELAY);
-=======
-	TMP100(int I2CInstanceNo, int mode, uint8_t tempaddress,UART_HandleTypeDef huart2, I2C_HandleTypeDef hi2c,  uint32_t delay=HAL_MAX_DELAY);
->>>>>>> parent of 6c0df58 (Working implementation)
 
 
 	I2C::STATUS Set_Config(uint8_t settings = 0x60);

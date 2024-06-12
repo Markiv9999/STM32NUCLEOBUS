@@ -8,7 +8,6 @@
 #include "I2C.h"
 //Select I2C instance no from {1,2,3} (STM32NucleoL476 has 3 instances I2C1, I2C2, I2C3) and mode from {1=normal(100kbps), 2=fastmode(400kbps), 3=fastmodeplus(1Mbps)}
 I2C::I2C(int I2CInstanceNo, int mode,UART_HandleTypeDef huart2, uint32_t delay ) {
-<<<<<<< HEAD
 	char* Error_Msg[25];
 	sprintf((char*)Error_Msg,
 									"%u, %u \r\n",
@@ -32,33 +31,6 @@ I2C::I2C(int I2CInstanceNo, int mode,UART_HandleTypeDef huart2, uint32_t delay )
 		  		  hi2c1.Instance = I2C2;
 		  		  break;
 
-=======
-
-
-	char* Error_Msg[25];
-	sprintf((char*)Error_Msg,
-									"%u, %u \r\n",
-									((int)I2CInstanceNo),
-									((int)mode));
-	HAL_UART_Transmit(&huart2, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
-	huart=huart2;
-	  //Select appropriate Instance
-      switch(I2CInstanceNo)
-		  {
-		  	  case 1:
-		  		sprintf((char*)Error_Msg,
-		  											"instance set succefully \r\n",
-		  											((int)I2CInstanceNo),
-		  											((int)mode));
-		  		  hi2c1.Instance = I2C1;
-		  		HAL_UART_Transmit(&huart2, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
-		  		  break;
-
-		  	  case 2:
-		  		  hi2c1.Instance = I2C2;
-		  		  break;
-
->>>>>>> parent of 6c0df58 (Working implementation)
 		  	  case 3:
 		  		  hi2c1.Instance = I2C3;
 		  		  break;
