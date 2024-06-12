@@ -43,10 +43,6 @@ private:
 	int16_t val;
 
 
-	//huart is to be initialized if the print functions are to be used
-	UART_HandleTypeDef huart;
-	//Printflag will be set true when huart is initialized
-	bool Print_Flag=false;
 
 public:
 
