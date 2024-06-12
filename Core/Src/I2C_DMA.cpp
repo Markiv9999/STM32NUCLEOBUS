@@ -5,10 +5,10 @@
  *      Author: vikra
  */
 
-#include "I2C.h"
+#include "I2C_DMA.h"
 //Select I2C instance no from {1,2,3} (STM32NucleoL476 has 3 instances I2C1, I2C2, I2C3) and mode from {1=normal(100kbps), 2=fastmode(400kbps), 3=fastmodeplus(1Mbps)}
 
-I2C::I2C(uint8_t tempaddress, I2C_HandleTypeDef hi2c, uint32_t delay )
+I2C_DMA::I2C_DMA(uint8_t tempaddress, I2C_HandleTypeDef hi2c, uint32_t delay )
 {
 address=tempaddress;
 hi2c1=hi2c;
@@ -16,10 +16,10 @@ Wait_Delay=delay;
 
 }
 
-I2C_STATUS I2C::Transmit(uint8_t (&bits)[], int no_of_bytes)
+I2C_STATUS I2C_DMA::Transmit(uint8_t (&bits)[], int no_of_bytes)
 {
 	HAL_StatusTypeDef temp;
-	temp= HAL_I2C_Master_Transmit(&hi2c1 , address, bits, no_of_bytes, Wait_Delay);
+	temp= HAL_I2C_Master_Transmit_DMA(&hi2c1 , address, bits, no_of_bytes);
 
 	switch(temp)
 	{
@@ -68,10 +68,10 @@ void I2C::Transmit_DMA(uint8_t *bits, int no_of_bytes)
 
 
 
-I2C_STATUS I2C::Receive_2_Buffer(uint8_t (&I2C_Buffer)[],int no_of_bytes)
+I2C_STATUS I2C_DMA::Receive_2_Buffer(uint8_t (&I2C_Buffer)[],int no_of_bytes)
 {
 	HAL_StatusTypeDef temp;
-		temp= HAL_I2C_Master_Receive(&hi2c1, address, I2C_Buffer, no_of_bytes, Wait_Delay);
+		temp= HAL_I2C_Master_Receive_DMA(&hi2c1, address, I2C_Buffer, no_of_bytes);
 
 		switch(temp)
 		{
@@ -98,7 +98,7 @@ I2C_STATUS I2C::Receive_2_Buffer(uint8_t (&I2C_Buffer)[],int no_of_bytes)
 
 
 
-I2C::~I2C() {
+I2C_DMA::~I2C_DMA() {
 	// TODO Auto-generated destructor stub
 }
 

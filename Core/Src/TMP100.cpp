@@ -7,22 +7,14 @@
 
 #include "TMP100.h"
 
-<<<<<<< HEAD
-TMP100::TMP100(int I2CInstanceNo, int mode, uint8_t tempaddress, UART_HandleTypeDef huart2, uint32_t delay) : i2c(I2CInstanceNo,mode,huart2,delay)
-=======
-<<<<<<< HEAD
-TMP100::TMP100(uint8_t tempaddress, UART_HandleTypeDef huart2,I2C_HandleTypeDef hi2c,  uint32_t delay) : i2c(huart2,hi2c, delay)
-=======
-TMP100::TMP100(int I2CInstanceNo, int mode, uint8_t tempaddress, UART_HandleTypeDef huart2, uint32_t delay) : i2c(I2CInstanceNo,mode,huart2,delay)
->>>>>>> parent of ea59823 (Committing implementation)
->>>>>>> parent of 758cae6 (revert commit)
+
+TMP100::TMP100(uint8_t tempaddress,I2C_HandleTypeDef hi2c,  uint32_t delay) : i2c(tempaddress,hi2c, delay)
 {
-i2c.address=tempaddress;
 }
 
 
 
-I2C::STATUS TMP100::Set_Config(uint8_t settings)
+I2C_STATUS TMP100::Set_Config(uint8_t settings)
 {
 // Select config registry and overwrite bits
 uint8_t config[2]= {TMP_100_Config_Registry_Address, settings};
@@ -32,13 +24,13 @@ ret=i2c.Transmit(config, 2);
 return ret;
 }
 
-I2C::STATUS TMP100::Get_Temperature(double &temp_c)
+I2C_STATUS TMP100::Get_Temperature(double &temp_c)
 {   // Select temperature registry
 	uint8_t config[1] = {TMP_100_Temp_Registry_Address};
 
 	ret=i2c.Transmit(config, 1);
 	//
-	if ( ret != I2C::STATUS::OK )
+	if ( ret != I2C_STATUS::OK )
 		 {
 
 		   return ret;
@@ -49,7 +41,7 @@ I2C::STATUS TMP100::Get_Temperature(double &temp_c)
 			// Read 2 bytes from the temperature register to i2c object buffer
 			ret = i2c.Receive_2_Buffer(I2C_Buffer,2);
 
-		   if ( ret != I2C::STATUS::OK )
+		   if ( ret != I2C_STATUS::OK )
 		   {
 			 return ret;
 		   }

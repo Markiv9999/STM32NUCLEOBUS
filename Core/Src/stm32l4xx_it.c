@@ -26,7 +26,8 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-
+extern DMA_HandleTypeDef hdma_i2c1_rx;
+extern DMA_HandleTypeDef hdma_i2c1_tx;
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -199,5 +200,12 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /* USER CODE BEGIN 1 */
-
+void DMA1_Channel6_IRQHandler(void)
+{
+	HAL_DMA_IRQHandler(&hdma_i2c1_tx);
+}
+void DMA1_Channel7_IRQHandler(void)
+{
+	HAL_DMA_IRQHandler(&hdma_i2c1_rx);
+}
 /* USER CODE END 1 */

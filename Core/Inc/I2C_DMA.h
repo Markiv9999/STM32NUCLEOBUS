@@ -23,7 +23,7 @@ extern "C" {
 
 
 //Defines End
-class I2C {
+class I2C_DMA {
 
 
 
@@ -62,7 +62,7 @@ public:
 
 */
 
-	I2C(uint8_t tempaddress, I2C_HandleTypeDef hi2c, uint32_t delay);
+	I2C_DMA(uint8_t tempaddress, I2C_HandleTypeDef hi2c, uint32_t delay);
 
 	//TBD, Shouldnt be needed
 
@@ -72,7 +72,7 @@ public:
 	I2C_STATUS Receive_2_Buffer(uint8_t (&I2C_Buffer)[],int no_of_bytes);
 
 
-	virtual ~I2C();
+	virtual ~I2C_DMA();
 };
 
 

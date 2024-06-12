@@ -20,7 +20,7 @@ extern "C" {
 
 //User Includes here
 #include "stm32l4xx_hal.h"
-#include "I2C.h"
+#include "I2C_DMA.h"
 
 
 //End Includes
@@ -29,9 +29,10 @@ class TMP100 {
 
 private:
 
-
-	I2C i2c;
-	I2C::STATUS ret;
+	//Just change class of object to change between blocking(I2C),Interrupt(I2C_INT)
+	//and DMA(I2C_DMA) modes
+	I2C_DMA i2c;
+	I2C_STATUS ret;
 
 	//Define a class buffer according to peripheral
 	uint8_t I2C_Buffer[2];
@@ -48,19 +49,11 @@ private:
 
 public:
 
-<<<<<<< HEAD
-	TMP100(int I2CInstanceNo, int mode, uint8_t tempaddress,UART_HandleTypeDef huart2 ,  uint32_t delay=HAL_MAX_DELAY);
-=======
-<<<<<<< HEAD
-	TMP100(uint8_t tempaddress,UART_HandleTypeDef huart2, I2C_HandleTypeDef hi2c,  uint32_t delay=HAL_MAX_DELAY);
-=======
-	TMP100(int I2CInstanceNo, int mode, uint8_t tempaddress,UART_HandleTypeDef huart2 ,  uint32_t delay=HAL_MAX_DELAY);
->>>>>>> parent of ea59823 (Committing implementation)
->>>>>>> parent of 758cae6 (revert commit)
+	TMP100(uint8_t tempaddress, I2C_HandleTypeDef hi2c,  uint32_t delay=HAL_MAX_DELAY);
 
 
-	I2C::STATUS Set_Config(uint8_t settings = 0x60);
-	I2C::STATUS Get_Temperature(double &temp_c);
+	I2C_STATUS Set_Config(uint8_t settings = 0x60);
+	I2C_STATUS Get_Temperature(double &temp_c);
 
 
 

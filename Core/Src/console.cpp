@@ -1,0 +1,55 @@
+/*
+ * console.c
+ *
+ *  Created on: Jun 12, 2024
+ *      Author: vikra
+ */
+
+#include <console.h>
+
+
+
+console::console(UART_HandleTypeDef huarttemp)
+{
+	huart=huarttemp;
+}
+
+
+void console::print(const char (&Msg)[])
+{
+	HAL_UART_Transmit(&huart, (uint8_t*) Msg, strlen((char*)Msg), HAL_MAX_DELAY);
+}
+
+void console::check_ok(I2C_STATUS rettemp, const char (&operation_title_temp)[])
+{
+
+	char Error_Msg[20];
+	char operation_title[50];
+	strcpy(operation_title,operation_title_temp);
+	switch(rettemp)
+	{ 	case I2C_STATUS::OK:
+			strcpy(Error_Msg,strcat(operation_title,":SUCCESS:OK"));
+			break;
+
+		case I2C_STATUS::ERROR:
+			strcpy(Error_Msg,strcat(operation_title,":FAILED:ERROR"));
+
+		case I2C_STATUS::BUSY:
+			strcpy(Error_Msg,strcat(operation_title,":FAILED:BUSY"));
+							break;
+		case I2C_STATUS::TIMEOUT:
+			strcpy(Error_Msg,strcat(operation_title,":FAILED:TIMEOUT"));
+							break;
+		case I2C_STATUS::SHOULD_NOT_HAPPEN:
+			strcpy(Error_Msg,strcat(operation_title,":FAILED:SHOULD_NOT_HAPPEN"));
+							break;
+
+
+	}
+	print((Error_Msg));
+}
+
+console::~console()
+{
+
+}

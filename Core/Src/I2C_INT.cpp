@@ -19,7 +19,7 @@ Wait_Delay=delay;
 I2C_STATUS I2C::Transmit(uint8_t (&bits)[], int no_of_bytes)
 {
 	HAL_StatusTypeDef temp;
-	temp= HAL_I2C_Master_Transmit(&hi2c1 , address, bits, no_of_bytes, Wait_Delay);
+	temp= HAL_I2C_Master_Transmit_IT(&hi2c1 , address, bits, no_of_bytes);
 
 	switch(temp)
 	{
@@ -71,7 +71,7 @@ void I2C::Transmit_DMA(uint8_t *bits, int no_of_bytes)
 I2C_STATUS I2C::Receive_2_Buffer(uint8_t (&I2C_Buffer)[],int no_of_bytes)
 {
 	HAL_StatusTypeDef temp;
-		temp= HAL_I2C_Master_Receive(&hi2c1, address, I2C_Buffer, no_of_bytes, Wait_Delay);
+		temp= HAL_I2C_Master_Receive_IT(&hi2c1, address, I2C_Buffer, no_of_bytes);
 
 		switch(temp)
 		{
