@@ -46,6 +46,7 @@
 UART_HandleTypeDef huart2;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 /* USER CODE BEGIN PV */
@@ -57,6 +58,14 @@ char* Error_Msg[25];
 
 /* USER CODE BEGIN PV */
 double temp_c;
+=======
+
+I2C::STATUS ret;
+char* Error_Msg[25];
+
+/* USER CODE BEGIN PV */
+double temp_c;
+>>>>>>> parent of ea59823 (Committing implementation)
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -105,10 +114,14 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //Declare and Initialize Sensor
 <<<<<<< HEAD
+<<<<<<< HEAD
   TMP100 TestSensor(1, 1, TMP_100_Address, huart2 );
 =======
   TMP100 TestSensor(1, 1, TMP_100_Address, huart2, hi2c1 );
 >>>>>>> parent of 6c0df58 (Working implementation)
+=======
+  TMP100 TestSensor(1, 1, TMP_100_Address, huart2 );
+>>>>>>> parent of ea59823 (Committing implementation)
 
 
   //Set Configuration of Sensor (no arguments = default)
