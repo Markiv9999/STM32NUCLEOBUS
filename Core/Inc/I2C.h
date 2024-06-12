@@ -14,6 +14,8 @@ extern "C" {
 
 //Includes here
 #include "stm32l4xx_hal.h"
+#include "stm32l4xx_hal_i2c_ex.h"
+#include "stm32l4xx_hal_i2c.h"
 #include <string.h>
 #include <stdio.h>
 #include <main.h>

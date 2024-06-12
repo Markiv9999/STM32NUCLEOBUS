@@ -8,6 +8,8 @@
 #include "I2C.h"
 //Select I2C instance no from {1,2,3} (STM32NucleoL476 has 3 instances I2C1, I2C2, I2C3) and mode from {1=normal(100kbps), 2=fastmode(400kbps), 3=fastmodeplus(1Mbps)}
 I2C::I2C(int I2CInstanceNo, int mode,UART_HandleTypeDef huart2, uint32_t delay ) {
+
+
 	char* Error_Msg[25];
 	sprintf((char*)Error_Msg,
 									"%u, %u \r\n",
