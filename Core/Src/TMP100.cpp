@@ -56,7 +56,7 @@ I2C::STATUS TMP100::Get_Temperature(double &temp_c)
 			 }
 
 			 // Convert to float temperature value (Celsius)
-			 temp_c = val * 0.0625;
+			 Temp_C = val * 0.0625;
 
 
 
