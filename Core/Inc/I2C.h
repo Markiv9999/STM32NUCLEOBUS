@@ -62,7 +62,7 @@ public:
 
 */
 
-	I2C(UART_HandleTypeDef huart2, I2C_HandleTypeDef hi2c, uint32_t delay);
+	I2C( int I2CInstanceNo, int mode,UART_HandleTypeDef huart2, uint32_t delay=HAL_MAX_DELAY );
 
 	//TBD, Shouldnt be needed
 	void Error_Handler();

@@ -51,7 +51,11 @@ char* Error_Msg[25];
 
 /* USER CODE BEGIN PV */
 <<<<<<< HEAD
+<<<<<<< HEAD
 double temp_c=5;
+=======
+double temp_c;
+>>>>>>> parent of 6c0df58 (Working implementation)
 char* Error_Msg[25];
 I2C::STATUS ret;
 =======
@@ -105,10 +109,14 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //Declare and Initialize Sensor
 <<<<<<< HEAD
+<<<<<<< HEAD
   TMP100 TestSensor(TMP_100_Address, huart2, hi2c1 );
 =======
   TMP100 TestSensor(1, 1, TMP_100_Address, huart2 );
 >>>>>>> parent of ea59823 (Committing implementation)
+=======
+  TMP100 TestSensor(1, 1, TMP_100_Address, huart2, hi2c1 );
+>>>>>>> parent of 6c0df58 (Working implementation)
 
 
   //Set Configuration of Sensor (no arguments = default)
@@ -123,7 +131,8 @@ int main(void)
     			}
 
     				HAL_UART_Transmit(&huart2, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
-
+while(1)
+{}
   /*while (HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY)
       {
       }
@@ -135,7 +144,6 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-
   while (1)
   {
   	ret=TestSensor.Get_Temperature(temp_c);
