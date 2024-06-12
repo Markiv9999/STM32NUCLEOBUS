@@ -21,8 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
 #include <TMP100.h>
+
 #include <console.h>
 /* USER CODE END Includes */
 
@@ -132,7 +132,9 @@ int main(void)
   while (1)
   {
   	ret=TestSensor.Get_Temperature(temp_c);
-  	 if ( ret != I2C_STATUS::OK )
+
+  	con1.check_ok(ret, "Temperature");
+  	if ( ret != I2C_STATUS::OK )
 		 {
 		   strcpy((char*)Error_Msg, "Error Getting Temp\r\n");
 		 }
@@ -145,7 +147,6 @@ int main(void)
 					"%u.%u C\r\n",
 					((unsigned int)temp_c / 100),
 					((unsigned int)temp_c % 100));
-
 
 		}
     con1.print(Error_Msg);
@@ -363,13 +364,33 @@ void Error_Handler(void)
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
   //__disable_irq();
+	console con1(huart2);
   con1.print("Entered Error handler");
 
 
 
 
-  /* USER CODE END Error_Handler_Debug */
+
 }
+
+void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+	console con1(huart2);
+	  con1.print("Transmission complete");
+
+
+}
+
+
+void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+
+	console con1(huart2);
+		  con1.print("Reception complete");
+}
+
+  /* USER CODE END Error_Handler_Debug */
+
 
 #ifdef  USE_FULL_ASSERT
 /**

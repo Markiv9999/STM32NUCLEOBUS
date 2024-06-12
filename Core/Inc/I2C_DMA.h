@@ -37,30 +37,6 @@ I2C_HandleTypeDef hi2c1;
 public:
 
 	uint8_t address;
-	/*enum class I2C_STATUS
-	{
-		OK,
-
-		ERROR,
-
-		BUSY,
-
-		TIMEOUT,
-
-		SHOULD_NOT_HAPPEN
-	};*/
-
-	/*
-	enum I2C_Mode
-	{
-		I2C_NORMAL,
-
-		I2C_FAST,
-
-		I2C_FASTPLUS
-	};
-
-*/
 
 	I2C_DMA(uint8_t tempaddress, I2C_HandleTypeDef hi2c, uint32_t delay);
 

@@ -24,7 +24,7 @@ private:
 
 public:
 	console(UART_HandleTypeDef huart);
-	void print(char (&Msg)[]);
+	void print(const char (&Msg)[]);
 	void check_ok(I2C_STATUS rettemp,const char (&operation_title)[]);
 	virtual ~console();
 };

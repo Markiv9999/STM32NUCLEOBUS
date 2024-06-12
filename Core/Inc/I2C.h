@@ -37,30 +37,7 @@ I2C_HandleTypeDef hi2c1;
 public:
 
 	uint8_t address;
-	/*enum class I2C_STATUS
-	{
-		OK,
 
-		ERROR,
-
-		BUSY,
-
-		TIMEOUT,
-
-		SHOULD_NOT_HAPPEN
-	};*/
-
-	/*
-	enum I2C_Mode
-	{
-		I2C_NORMAL,
-
-		I2C_FAST,
-
-		I2C_FASTPLUS
-	};
-
-*/
 
 	I2C(uint8_t tempaddress, I2C_HandleTypeDef hi2c, uint32_t delay);
 
@@ -68,8 +45,8 @@ public:
 
 
 	//Operational Functions
-	I2C_STATUS Transmit(uint8_t (&bits)[], int no_of_bytes);
-	I2C_STATUS Receive_2_Buffer(uint8_t (&I2C_Buffer)[],int no_of_bytes);
+	virtual I2C_STATUS Transmit(uint8_t (&bits)[], int no_of_bytes);
+	virtual I2C_STATUS Receive_2_Buffer(uint8_t (&I2C_Buffer)[],int no_of_bytes);
 
 
 	virtual ~I2C();

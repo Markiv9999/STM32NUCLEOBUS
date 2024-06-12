@@ -27,45 +27,61 @@ return ret;
 I2C_STATUS TMP100::Get_Temperature(double &temp_c)
 {   // Select temperature registry
 	uint8_t config[1] = {TMP_100_Temp_Registry_Address};
-
 	ret=i2c.Transmit(config, 1);
 	//
-	if ( ret != I2C_STATUS::OK )
+	if ( ret == I2C_STATUS::BUSY )
 		 {
-
-		   return ret;
-
+		   HAL_Delay(0);
+		 }
+	else if(ret != I2C_STATUS::OK)
+		 {
+		 return ret;
 		 }
 	else
 		{
 			// Read 2 bytes from the temperature register to i2c object buffer
 			ret = i2c.Receive_2_Buffer(I2C_Buffer,2);
 
-		   if ( ret != I2C_STATUS::OK )
-		   {
-			 return ret;
-		   }
-		   else
-		   {
-			 //Combine the bytes from i2c internal buffer to temperature as signed integer
-			 val = ((int16_t)I2C_Buffer[0] << 4) | (I2C_Buffer[1] >> 4);
+			if ( ret == I2C_STATUS::BUSY )
+				{
+				   HAL_Delay(0);
 
-			 // Convert to 2's complement, since temperature can be negative
-			 if ( val > 0x7FF ) {
-			   val |= 0xF000;
-			 }
+			    }
+			else if(ret != I2C_STATUS::OK)
+				{
+				return ret;
+				}
+		    else
+			    {
+				 //Combine the bytes from i2c internal buffer to temperature as signed integer
+				 val = ((int16_t)I2C_Buffer[0] << 4) | (I2C_Buffer[1] >> 4);
 
-			 // Convert to float temperature value (Celsius)
-			 temp_c = val * 0.0625;
+				 // Convert to 2's complement, since temperature can be negative
+				 if ( val > 0x7FF )
+					 {
+					   val |= 0xF000;
+					 }
+
+				 // Convert to float temperature value (Celsius)
+				 temp_c = val * 0.0625;
+				 }
 
 
-
-			 }
-
-
-	}
+		}
 return ret;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 
 void TMP100::Set_Config_DMA(uint8_t settings)

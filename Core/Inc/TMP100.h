@@ -20,6 +20,7 @@ extern "C" {
 
 //User Includes here
 #include "stm32l4xx_hal.h"
+
 #include "I2C_DMA.h"
 
 
@@ -30,7 +31,7 @@ class TMP100 {
 private:
 
 	//Just change class of object to change between blocking(I2C),Interrupt(I2C_INT)
-	//and DMA(I2C_DMA) modes
+	//and DMA(I2C_DMA) modes and change header file.
 	I2C_DMA i2c;
 	I2C_STATUS ret;
 
