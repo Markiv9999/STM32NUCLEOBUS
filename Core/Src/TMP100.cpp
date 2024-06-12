@@ -6,7 +6,7 @@
  */
 
 #include "TMP100.h"
-#include "main.h"
+
 
 TMP100::TMP100(uint8_t tempaddress,I2C_HandleTypeDef hi2c,  uint32_t delay) : i2c(tempaddress,hi2c, delay)
 {

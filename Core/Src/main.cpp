@@ -114,7 +114,7 @@ int main(void)
   ret=TestSensor.Set_Config(0x60);
   HAL_Delay(1000);
   con1.check_ok(ret, "SetConfig");
-  HAL_DMA_Abort(&hdma_i2c1_tx);
+
 
 
 
