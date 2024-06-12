@@ -46,7 +46,7 @@ I2C_HandleTypeDef hi2c1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-double temp_c=5;
+double temp_c;
 char* Error_Msg[25];
 I2C::STATUS ret;
 /* USER CODE END PV */
@@ -98,7 +98,7 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   //Declare and Initialize Sensor
-  TMP100 TestSensor(TMP_100_Address, huart2, hi2c1 );
+  TMP100 TestSensor(1, 1, TMP_100_Address, huart2, hi2c1 );
 
 
   //Set Configuration of Sensor (no arguments = default)
@@ -113,7 +113,8 @@ int main(void)
     			}
 
     				HAL_UART_Transmit(&huart2, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
-
+while(1)
+{}
   /*while (HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY)
       {
       }
@@ -125,7 +126,6 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-
   while (1)
   {
   	ret=TestSensor.Get_Temperature(temp_c);
