@@ -28,20 +28,20 @@ void console::check_ok(I2C_STATUS rettemp, const char (&operation_title_temp)[])
 	strcpy(operation_title,operation_title_temp);
 	switch(rettemp)
 	{ 	case I2C_STATUS::OK:
-			strcpy(Error_Msg,strcat(operation_title,":SUCCESS:OK"));
+			strcpy(Error_Msg,strcat(operation_title,":SUCCESS:OK \r\n"));
 			break;
 
 		case I2C_STATUS::ERROR:
-			strcpy(Error_Msg,strcat(operation_title,":FAILED:ERROR"));
+			strcpy(Error_Msg,strcat(operation_title,":FAILED:ERROR\r\n"));
 
 		case I2C_STATUS::BUSY:
-			strcpy(Error_Msg,strcat(operation_title,":FAILED:BUSY"));
+			strcpy(Error_Msg,strcat(operation_title,":FAILED:BUSY\r\n"));
 							break;
 		case I2C_STATUS::TIMEOUT:
-			strcpy(Error_Msg,strcat(operation_title,":FAILED:TIMEOUT"));
+			strcpy(Error_Msg,strcat(operation_title,":FAILED:TIMEOUT\r\n"));
 							break;
 		case I2C_STATUS::SHOULD_NOT_HAPPEN:
-			strcpy(Error_Msg,strcat(operation_title,":FAILED:SHOULD_NOT_HAPPEN"));
+			strcpy(Error_Msg,strcat(operation_title,":FAILED:SHOULD_NOT_HAPPEN\r\n"));
 							break;
 
 

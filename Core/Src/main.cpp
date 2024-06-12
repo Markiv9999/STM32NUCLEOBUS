@@ -112,18 +112,13 @@ int main(void)
 
   //Set Configuration of Sensor (no arguments = default)
   ret=TestSensor.Set_Config(0x60);
+  HAL_Delay(1000);
   con1.check_ok(ret, "SetConfig");
+  HAL_DMA_Abort(&hdma_i2c1_tx);
 
 
 
 
-  /*while (HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY)
-      {
-      }
-  TestSensor.Set_Config_DMA(0x60);
-  TestSensor.Set_Config_DMA(0x60);
-  TestSensor.Set_Config_DMA(0x60);
-  temp=TestSensor.Get_Temperature_DMA();*/
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -351,7 +346,20 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
+void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+	console con1(huart2);
+	con1.print("Transmission complete");
 
+
+}
+
+
+void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+	console con1(huart2);
+	con1.print("Reception complete");
+}
 
 /* USER CODE END 4 */
 
@@ -366,31 +374,8 @@ void Error_Handler(void)
   //__disable_irq();
 	console con1(huart2);
   con1.print("Entered Error handler");
-
-
-
-
-
-}
-
-void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *hi2c)
-{
-	console con1(huart2);
-	  con1.print("Transmission complete");
-
-
-}
-
-
-void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c)
-{
-
-	console con1(huart2);
-		  con1.print("Reception complete");
-}
-
   /* USER CODE END Error_Handler_Debug */
-
+}
 
 #ifdef  USE_FULL_ASSERT
 /**

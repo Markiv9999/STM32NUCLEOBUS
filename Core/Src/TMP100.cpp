@@ -6,7 +6,7 @@
  */
 
 #include "TMP100.h"
-
+#include "main.h"
 
 TMP100::TMP100(uint8_t tempaddress,I2C_HandleTypeDef hi2c,  uint32_t delay) : i2c(tempaddress,hi2c, delay)
 {
@@ -28,6 +28,7 @@ I2C_STATUS TMP100::Get_Temperature(double &temp_c)
 {   // Select temperature registry
 	uint8_t config[1] = {TMP_100_Temp_Registry_Address};
 	ret=i2c.Transmit(config, 1);
+
 	//
 	if ( ret == I2C_STATUS::BUSY )
 		 {
@@ -41,6 +42,7 @@ I2C_STATUS TMP100::Get_Temperature(double &temp_c)
 		{
 			// Read 2 bytes from the temperature register to i2c object buffer
 			ret = i2c.Receive_2_Buffer(I2C_Buffer,2);
+
 
 			if ( ret == I2C_STATUS::BUSY )
 				{

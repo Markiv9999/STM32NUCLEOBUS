@@ -42,29 +42,6 @@ I2C_STATUS I2C::Transmit(uint8_t (&bits)[], int no_of_bytes)
 
 	return I2C_STATUS::SHOULD_NOT_HAPPEN;
 }
-/*
-void I2C::Transmit_DMA(uint8_t *bits, int no_of_bytes)
-{
-	 if(HAL_I2C_Master_Transmit_DMA(&hi2c1 , address, bits, no_of_bytes)!= HAL_OK)
-	 {
-		 return HAL_ERROR;
-	 }
-
-	 return HAL_OK;
-
-	return HAL_I2C_Master_Transmit_DMA(&hi2c1 , address, bits, no_of_bytes);
-}
-
-*/
-
-
-
-//void I2C::initprint(UART_HandleTypeDef huartt)
-//{
-//	huart=huartt;
-//	printflag=true;
-//}
-
 
 
 

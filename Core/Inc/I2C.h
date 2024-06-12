@@ -25,19 +25,14 @@ extern "C" {
 //Defines End
 class I2C {
 
-
+I2C_HandleTypeDef hi2c1;
 
 uint32_t Wait_Delay= HAL_MAX_DELAY;
 
-I2C_HandleTypeDef hi2c1;
-
-
+uint8_t address;
 
 
 public:
-
-	uint8_t address;
-
 
 	I2C(uint8_t tempaddress, I2C_HandleTypeDef hi2c, uint32_t delay);
 
