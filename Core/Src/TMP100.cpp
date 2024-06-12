@@ -7,7 +7,7 @@
 
 #include "TMP100.h"
 
-TMP100::TMP100(int I2CInstanceNo, int mode, uint8_t tempaddress, UART_HandleTypeDef huart2,I2C_HandleTypeDef hi2c,  uint32_t delay) : i2c(I2CInstanceNo,mode,huart2, delay)
+TMP100::TMP100(uint8_t tempaddress, UART_HandleTypeDef huart2,I2C_HandleTypeDef hi2c,  uint32_t delay) : i2c(huart2,hi2c, delay)
 {
 i2c.address=tempaddress;
 }
@@ -56,7 +56,7 @@ I2C::STATUS TMP100::Get_Temperature(double &temp_c)
 			 }
 
 			 // Convert to float temperature value (Celsius)
-			 Temp_C = val * 0.0625;
+			 temp_c = val * 0.0625;
 
 
 
