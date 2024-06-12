@@ -50,7 +50,17 @@ I2C::STATUS ret;
 char* Error_Msg[25];
 
 /* USER CODE BEGIN PV */
+<<<<<<< HEAD
 double temp_c;
+=======
+<<<<<<< HEAD
+double temp_c=5;
+char* Error_Msg[25];
+I2C::STATUS ret;
+=======
+double temp_c;
+>>>>>>> parent of ea59823 (Committing implementation)
+>>>>>>> parent of 758cae6 (revert commit)
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -98,7 +108,15 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   //Declare and Initialize Sensor
+<<<<<<< HEAD
   TMP100 TestSensor(1, 1, TMP_100_Address, huart2 );
+=======
+<<<<<<< HEAD
+  TMP100 TestSensor(TMP_100_Address, huart2, hi2c1 );
+=======
+  TMP100 TestSensor(1, 1, TMP_100_Address, huart2 );
+>>>>>>> parent of ea59823 (Committing implementation)
+>>>>>>> parent of 758cae6 (revert commit)
 
 
   //Set Configuration of Sensor (no arguments = default)
@@ -113,8 +131,7 @@ int main(void)
     			}
 
     				HAL_UART_Transmit(&huart2, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
-while(1)
-{}
+
   /*while (HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY)
       {
       }
@@ -126,6 +143,7 @@ while(1)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
   while (1)
   {
   	ret=TestSensor.Get_Temperature(temp_c);
