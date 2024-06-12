@@ -37,7 +37,6 @@ private:
 	uint8_t I2C_Buffer[2];
 
 	//Temperature in Celsius
-	double Temp_C;
 	//Temperature in signed bits
 	int16_t val;
 

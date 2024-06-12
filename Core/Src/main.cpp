@@ -113,8 +113,7 @@ int main(void)
     			}
 
     				HAL_UART_Transmit(&huart2, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
-while(1)
-{}
+
   /*while (HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY)
       {
       }
@@ -143,8 +142,9 @@ while(1)
 								((unsigned int)temp_c / 100),
 								((unsigned int)temp_c % 100));
 
-						HAL_UART_Transmit(&huart2, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
+
   	    			}
+  	HAL_UART_Transmit(&huart2, (uint8_t*) Error_Msg, strlen((char*)Error_Msg), HAL_MAX_DELAY);
   	//TestSensor.Set_Config_DMA(0x60);
     /* USER CODE END WHILE */
 
