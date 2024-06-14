@@ -28,11 +28,10 @@ I2C_STATUS TMP100::Get_Temperature(double &temp_c)
 {   // Select temperature registry
 	uint8_t config[1] = {TMP_100_Temp_Registry_Address};
 	ret=i2c.Transmit(config, 1);
-
 	//
 	if ( ret == I2C_STATUS::BUSY )
 		 {
-		   HAL_Delay(0);
+
 		 }
 	else if(ret != I2C_STATUS::OK)
 		 {
@@ -43,10 +42,9 @@ I2C_STATUS TMP100::Get_Temperature(double &temp_c)
 			// Read 2 bytes from the temperature register to i2c object buffer
 			ret = i2c.Receive_2_Buffer(I2C_Buffer,2);
 
-
 			if ( ret == I2C_STATUS::BUSY )
 				{
-				   HAL_Delay(0);
+
 
 			    }
 			else if(ret != I2C_STATUS::OK)

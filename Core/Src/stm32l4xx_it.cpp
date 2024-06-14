@@ -22,12 +22,12 @@
 #include "stm32l4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <console.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-extern DMA_HandleTypeDef hdma_i2c1_rx;
-extern DMA_HandleTypeDef hdma_i2c1_tx;
+
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -56,8 +56,8 @@ extern DMA_HandleTypeDef hdma_i2c1_tx;
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern DMA_HandleTypeDef hdma_i2c1_rx;
-extern DMA_HandleTypeDef hdma_i2c1_tx;
+extern I2C_HandleTypeDef hi2c2;
+extern UART_HandleTypeDef huart2;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -201,40 +201,68 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles DMA1 channel6 global interrupt.
+  * @brief This function handles I2C2 event interrupt.
   */
-void DMA1_Channel6_IRQHandler(void)
+void I2C2_EV_IRQHandler(void)
 {
-  /* USER CODE BEGIN DMA1_Channel6_IRQn 0 */
+  /* USER CODE BEGIN I2C2_EV_IRQn 0 */
+	console con1(huart2);
+	con1.print("Event Handler In\r\n");
 
-  /* USER CODE END DMA1_Channel6_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_i2c1_tx);
-  /* USER CODE BEGIN DMA1_Channel6_IRQn 1 */
+	uint32_t itflags = READ_REG(hi2c2.Instance->ISR);  // Read interrupt flags
+	const char value = (char) (itflags);
+	con1.print((value));
+	/*uint32_t itsources = READ_REG(hi2c2.Instance->CR1);  // Read interrupt sources
 
-  /* USER CODE END DMA1_Channel6_IRQn 1 */
+
+
+	if ((itflags & I2C_FLAG_TCR) != 0)  // Check if TCR flag is set (transfer complete)
+	    {
+	        // Implement your logic to handle transfer complete event
+			HAL_I2C_MasterTxCpltCallback(&hi2c2);
+			// Clear TCR interrupt flag
+	        hi2c2.Instance->ICR = I2C_FLAG_TCR;
+
+	    }
+*/
+
+
+  /* USER CODE END I2C2_EV_IRQn 0 */
+ // HAL_I2C_EV_IRQHandler(&hi2c2);
+
+  /* USER CODE BEGIN I2C2_EV_IRQn 1 */
+  con1.print("Event Handler Out\r\n");
+  /* USER CODE END I2C2_EV_IRQn 1 */
 }
 
 /**
-  * @brief This function handles DMA1 channel7 global interrupt.
+  * @brief This function handles I2C2 error interrupt.
   */
-void DMA1_Channel7_IRQHandler(void)
+void I2C2_ER_IRQHandler(void)
 {
-  /* USER CODE BEGIN DMA1_Channel7_IRQn 0 */
+  /* USER CODE BEGIN I2C2_ER_IRQn 0 */
 
-  /* USER CODE END DMA1_Channel7_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_i2c1_rx);
-  /* USER CODE BEGIN DMA1_Channel7_IRQn 1 */
+  /* USER CODE END I2C2_ER_IRQn 0 */
+  HAL_I2C_ER_IRQHandler(&hi2c2);
+  /* USER CODE BEGIN I2C2_ER_IRQn 1 */
 
-  /* USER CODE END DMA1_Channel7_IRQn 1 */
+  /* USER CODE END I2C2_ER_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI line[15:10] interrupts.
+  */
+void EXTI15_10_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
+
+  /* USER CODE END EXTI15_10_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(B1_Pin);
+  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
+
+  /* USER CODE END EXTI15_10_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
-/*void DMA1_Channel6_IRQHandler(void)
-{
-	HAL_DMA_IRQHandler(&hdma_i2c1_tx);
-}
-void DMA1_Channel7_IRQHandler(void)
-{
-	HAL_DMA_IRQHandler(&hdma_i2c1_rx);
-}*/
+
 /* USER CODE END 1 */

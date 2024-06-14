@@ -43,8 +43,6 @@ void console::check_ok(I2C_STATUS rettemp, const char (&operation_title_temp)[])
 		case I2C_STATUS::SHOULD_NOT_HAPPEN:
 			strcpy(Error_Msg,strcat(operation_title,":FAILED:SHOULD_NOT_HAPPEN\r\n"));
 							break;
-
-
 	}
 	print((Error_Msg));
 }

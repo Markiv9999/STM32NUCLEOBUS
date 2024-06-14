@@ -21,7 +21,7 @@ extern "C" {
 //User Includes here
 #include "stm32l4xx_hal.h"
 
-#include "I2C_DMA.h"
+#include "I2C_IT.h"
 
 
 //End Includes
@@ -32,7 +32,7 @@ private:
 
 	//Just change class of object to change between blocking(I2C),Interrupt(I2C_INT)
 	//and DMA(I2C_DMA) modes and change header file.
-	I2C_DMA i2c;
+	I2C_IT i2c;
 	I2C_STATUS ret;
 
 	//Define a class buffer according to peripheral
