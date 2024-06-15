@@ -17,17 +17,28 @@ TMP100::TMP100(uint8_t tempaddress,I2C_HandleTypeDef hi2c,  uint32_t delay) : i2
 I2C_STATUS TMP100::Set_Config(uint8_t settings)
 {
 // Select config registry and overwrite bits
-uint8_t config[2]= {TMP_100_Config_Registry_Address, settings};
 
-ret=i2c.Transmit(config, 2);
+I2C_Buffer[0]=TMP_100_Config_Registry_Address;
+I2C_Buffer[1]=settings;
+
+ret=i2c.Transmit(I2C_Buffer, 2);
+
+return ret;
+}
+
+I2C_STATUS TMP100::Select_Temp_Registry()
+{
+// Select config registry and overwrite bits
+	I2C_Buffer[0]=TMP_100_Temp_Registry_Address;
+
+ret=i2c.Transmit(I2C_Buffer, 1);
 
 return ret;
 }
 
 I2C_STATUS TMP100::Get_Temperature(double &temp_c)
 {   // Select temperature registry
-	uint8_t config[1] = {TMP_100_Temp_Registry_Address};
-	ret=i2c.Transmit(config, 1);
+	ret=Select_Temp_Registry();
 	//
 	if ( ret == I2C_STATUS::BUSY )
 		 {

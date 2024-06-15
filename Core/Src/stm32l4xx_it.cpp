@@ -20,14 +20,14 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32l4xx_it.h"
+#include <console.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <console.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-
+extern UART_HandleTypeDef huart2;
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -56,8 +56,8 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern I2C_HandleTypeDef hi2c2;
-extern UART_HandleTypeDef huart2;
+extern DMA_HandleTypeDef hdma_i2c2_rx;
+extern DMA_HandleTypeDef hdma_i2c2_tx;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -201,52 +201,33 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles I2C2 event interrupt.
+  * @brief This function handles DMA1 channel4 global interrupt.
   */
-void I2C2_EV_IRQHandler(void)
+void DMA1_Channel4_IRQHandler(void)
 {
-  /* USER CODE BEGIN I2C2_EV_IRQn 0 */
+  /* USER CODE BEGIN DMA1_Channel4_IRQn 0 */
 	console con1(huart2);
-	con1.print("Event Handler In\r\n");
-
-	uint32_t itflags = READ_REG(hi2c2.Instance->ISR);  // Read interrupt flags
-	const char value = (char) (itflags);
-	con1.print((value));
-	/*uint32_t itsources = READ_REG(hi2c2.Instance->CR1);  // Read interrupt sources
-
-
-
-	if ((itflags & I2C_FLAG_TCR) != 0)  // Check if TCR flag is set (transfer complete)
-	    {
-	        // Implement your logic to handle transfer complete event
-			HAL_I2C_MasterTxCpltCallback(&hi2c2);
-			// Clear TCR interrupt flag
-	        hi2c2.Instance->ICR = I2C_FLAG_TCR;
-
-	    }
-*/
-
-
-  /* USER CODE END I2C2_EV_IRQn 0 */
- // HAL_I2C_EV_IRQHandler(&hi2c2);
-
-  /* USER CODE BEGIN I2C2_EV_IRQn 1 */
+			con1.print("Event Handler In\r\n");
+  /* USER CODE END DMA1_Channel4_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_i2c2_tx);
+  /* USER CODE BEGIN DMA1_Channel4_IRQn 1 */
   con1.print("Event Handler Out\r\n");
-  /* USER CODE END I2C2_EV_IRQn 1 */
+  /* USER CODE END DMA1_Channel4_IRQn 1 */
 }
 
 /**
-  * @brief This function handles I2C2 error interrupt.
+  * @brief This function handles DMA1 channel5 global interrupt.
   */
-void I2C2_ER_IRQHandler(void)
+void DMA1_Channel5_IRQHandler(void)
 {
-  /* USER CODE BEGIN I2C2_ER_IRQn 0 */
-
-  /* USER CODE END I2C2_ER_IRQn 0 */
-  HAL_I2C_ER_IRQHandler(&hi2c2);
-  /* USER CODE BEGIN I2C2_ER_IRQn 1 */
-
-  /* USER CODE END I2C2_ER_IRQn 1 */
+  /* USER CODE BEGIN DMA1_Channel5_IRQn 0 */
+	console con1(huart2);
+		con1.print("Event Handler In\r\n");
+  /* USER CODE END DMA1_Channel5_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_i2c2_rx);
+  /* USER CODE BEGIN DMA1_Channel5_IRQn 1 */
+  con1.print("Event Handler Out\r\n");
+  /* USER CODE END DMA1_Channel5_IRQn 1 */
 }
 
 /**

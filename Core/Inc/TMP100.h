@@ -21,7 +21,7 @@ extern "C" {
 //User Includes here
 #include "stm32l4xx_hal.h"
 
-#include "I2C_IT.h"
+#include "I2C_DMA.h"
 
 
 //End Includes
@@ -32,11 +32,11 @@ private:
 
 	//Just change class of object to change between blocking(I2C),Interrupt(I2C_INT)
 	//and DMA(I2C_DMA) modes and change header file.
-	I2C_IT i2c;
+	I2C_DMA i2c;
 	I2C_STATUS ret;
 
 	//Define a class buffer according to peripheral
-	uint8_t I2C_Buffer[2];
+	uint8_t I2C_Buffer[10];
 
 
 	//Temperature in signed bits
@@ -48,7 +48,7 @@ public:
 
 	TMP100(uint8_t tempaddress, I2C_HandleTypeDef hi2c,  uint32_t delay=HAL_MAX_DELAY);
 
-
+	I2C_STATUS Select_Temp_Registry();
 	I2C_STATUS Set_Config(uint8_t settings = 0x60);
 	I2C_STATUS Get_Temperature(double &temp_c);
 

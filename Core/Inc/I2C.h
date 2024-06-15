@@ -29,19 +29,19 @@ I2C_HandleTypeDef hi2c1;
 
 uint32_t Wait_Delay= HAL_MAX_DELAY;
 
-uint8_t address;
+uint16_t address;
 
 
 public:
 
-	I2C(uint8_t tempaddress, I2C_HandleTypeDef hi2c, uint32_t delay);
+	I2C(uint16_t tempaddress, I2C_HandleTypeDef hi2c, uint32_t delay);
 
 	//TBD, Shouldnt be needed
 
 
 	//Operational Functions
-	virtual I2C_STATUS Transmit(uint8_t (&bits)[], int no_of_bytes);
-	virtual I2C_STATUS Receive_2_Buffer(uint8_t (&I2C_Buffer)[],int no_of_bytes);
+	virtual I2C_STATUS Transmit(uint8_t (&bits)[], uint16_t no_of_bytes);
+	virtual I2C_STATUS Receive_2_Buffer(uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes);
 
 
 	virtual ~I2C();

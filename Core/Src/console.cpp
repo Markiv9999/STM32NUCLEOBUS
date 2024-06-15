@@ -19,7 +19,15 @@ void console::print(const char (&Msg)[])
 {
 	HAL_UART_Transmit(&huart, (uint8_t*) Msg, strlen((char*)Msg), HAL_MAX_DELAY);
 }
-
+/*
+void console::print(uint32_t Msg)
+{	char *Error_Msg[50];
+	sprintf((char*)Error_Msg,
+		"%u \r\n",
+		((unsigned int)Msg));
+	HAL_UART_Transmit(&huart, (uint8_t*) Msg, strlen((char*)Msg), HAL_MAX_DELAY);
+}
+*/
 void console::check_ok(I2C_STATUS rettemp, const char (&operation_title_temp)[])
 {
 
