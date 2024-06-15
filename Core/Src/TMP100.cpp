@@ -8,11 +8,10 @@
 #include "TMP100.h"
 
 
-TMP100::TMP100(uint8_t tempaddress,I2C_HandleTypeDef hi2c,  uint32_t delay) : i2c(tempaddress,hi2c, delay)
+TMP100::TMP100(uint16_t tempaddress, I2C_HandleTypeDef hi2c, uint32_t delay) : i2c(tempaddress, hi2c, delay)
 {
+
 }
-
-
 
 I2C_STATUS TMP100::Set_Config(uint8_t settings)
 {

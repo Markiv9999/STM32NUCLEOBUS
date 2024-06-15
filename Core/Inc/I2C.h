@@ -8,9 +8,6 @@
 #ifndef I2C_H_
 #define I2C_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 //Includes here
 #include "stm32l4xx_hal.h"
@@ -34,6 +31,7 @@ uint16_t address;
 
 public:
 
+
 	I2C(uint16_t tempaddress, I2C_HandleTypeDef hi2c, uint32_t delay);
 
 	//TBD, Shouldnt be needed
@@ -48,9 +46,10 @@ public:
 };
 
 
-#ifdef __cplusplus
-}
-#endif
+class I2C_DMA:public I2C
+{
+
+};
 
 
 #endif /* I2C_H_ */

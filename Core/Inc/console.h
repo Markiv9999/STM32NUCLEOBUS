@@ -12,11 +12,14 @@
 #include <string.h>
 #include <stdio.h>
 #include <I2C_STATUS.h>
-
+/*
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+#ifdef __cplusplus
+}
+#endif
+*/
 class console
 {
 private:
@@ -31,7 +34,5 @@ public:
 };
 
 
-#ifdef __cplusplus
-}
-#endif
+
 #endif /* INC_CONSOLE_H_ */

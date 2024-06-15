@@ -8,9 +8,7 @@
 #ifndef I2C_H_
 #define I2C_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+
 
 //Includes here
 #include "stm32l4xx_hal.h"
@@ -52,9 +50,6 @@ public:
 };
 
 
-#ifdef __cplusplus
-}
-#endif
 
 
 #endif /* I2C_H_ */
