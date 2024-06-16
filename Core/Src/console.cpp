@@ -55,6 +55,7 @@ void console::check_ok(I2C_STATUS rettemp, const char (&operation_title_temp)[])
 	print((Error_Msg));
 }
 
+
 console::~console()
 {
 

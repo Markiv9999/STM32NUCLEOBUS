@@ -32,7 +32,7 @@ private:
 	//and DMA(I2C_DMA) modes and change header file.
 	I2C &i2c;
 	I2C_STATUS ret;
-
+	uint16_t address;
 	//Define a class buffer according to peripheral
 	uint8_t I2C_Buffer[10];
 
@@ -44,8 +44,7 @@ private:
 
 public:
 
-	TMP100(uint16_t tempaddress, I2C_HandleTypeDef hi2c,  uint32_t delay=HAL_MAX_DELAY);
-
+	TMP100(uint16_t tempaddress, I2C &I2Ctemp);
 	I2C_STATUS Select_Temp_Registry();
 	I2C_STATUS Set_Config(uint8_t settings = 0x60);
 	I2C_STATUS Get_Temperature(double &temp_c);

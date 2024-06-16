@@ -8,15 +8,22 @@
 #include "I2C.h"
 //Select I2C instance no from {1,2,3} (STM32NucleoL476 has 3 instances I2C1, I2C2, I2C3) and mode from {1=normal(100kbps), 2=fastmode(400kbps), 3=fastmodeplus(1Mbps)}
 
-I2C::I2C(uint16_t tempaddress, I2C_HandleTypeDef hi2c, uint32_t delay )
+I2C::I2C( I2C_HandleTypeDef hi2c, uint32_t delay )
 {
-address=tempaddress;
+
 hi2c1=hi2c;
 Wait_Delay=delay;
 
 }
 
-I2C_STATUS I2C::Transmit(uint8_t (&bits)[], uint16_t no_of_bytes)
+I2C::I2C( I2C & i2ctemp )
+{
+//Copy constructor
+	hi2c1=i2ctemp.hi2c1;
+	Wait_Delay=i2ctemp.Wait_Delay;
+}
+
+I2C_STATUS I2C::Transmit(uint16_t address,uint8_t (&bits)[], uint16_t no_of_bytes)
 {
 	HAL_StatusTypeDef temp;
 	temp= HAL_I2C_Master_Transmit(&hi2c1 , address, bits, no_of_bytes, Wait_Delay);
@@ -45,7 +52,7 @@ I2C_STATUS I2C::Transmit(uint8_t (&bits)[], uint16_t no_of_bytes)
 
 
 
-I2C_STATUS I2C::Receive_2_Buffer(uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes)
+I2C_STATUS I2C::Receive_2_Buffer(uint16_t address,uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes)
 {
 	HAL_StatusTypeDef temp;
 		temp= HAL_I2C_Master_Receive(&hi2c1, address, I2C_Buffer, no_of_bytes, Wait_Delay);

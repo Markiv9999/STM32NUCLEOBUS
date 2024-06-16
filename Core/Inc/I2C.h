@@ -26,30 +26,26 @@ I2C_HandleTypeDef hi2c1;
 
 uint32_t Wait_Delay= HAL_MAX_DELAY;
 
-uint16_t address;
+
 
 
 public:
 
-
-	I2C(uint16_t tempaddress, I2C_HandleTypeDef hi2c, uint32_t delay);
-
-	//TBD, Shouldnt be needed
+	//Constructor to initialize I2C object
+	I2C(I2C_HandleTypeDef hi2c, uint32_t delay=HAL_MAX_DELAY);
+	//Copy constructor to pass I2C object by reference to each sensor
+	I2C( I2C &i2ctemp );
 
 
 	//Operational Functions
-	virtual I2C_STATUS Transmit(uint8_t (&bits)[], uint16_t no_of_bytes);
-	virtual I2C_STATUS Receive_2_Buffer(uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes);
+	virtual I2C_STATUS Transmit(uint16_t address, uint8_t (&bits)[], uint16_t no_of_bytes);
+	virtual I2C_STATUS Receive_2_Buffer(uint16_t address, uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes);
 
 
 	virtual ~I2C();
 };
 
 
-class I2C_DMA:public I2C
-{
-
-};
 
 
 #endif /* I2C_H_ */

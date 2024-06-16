@@ -8,9 +8,9 @@
 #include "TMP100.h"
 
 
-TMP100::TMP100(uint16_t tempaddress, I2C_HandleTypeDef hi2c, uint32_t delay) : i2c(tempaddress, hi2c, delay)
+TMP100::TMP100(uint16_t tempaddress, I2C &I2Ctemp) : i2c(I2Ctemp)
 {
-
+address = tempaddress;
 }
 
 I2C_STATUS TMP100::Set_Config(uint8_t settings)
@@ -20,7 +20,7 @@ I2C_STATUS TMP100::Set_Config(uint8_t settings)
 I2C_Buffer[0]=TMP_100_Config_Registry_Address;
 I2C_Buffer[1]=settings;
 
-ret=i2c.Transmit(I2C_Buffer, 2);
+ret=i2c.Transmit(address,I2C_Buffer, 2);
 
 return ret;
 }
@@ -30,7 +30,7 @@ I2C_STATUS TMP100::Select_Temp_Registry()
 // Select config registry and overwrite bits
 	I2C_Buffer[0]=TMP_100_Temp_Registry_Address;
 
-ret=i2c.Transmit(I2C_Buffer, 1);
+ret=i2c.Transmit(address,I2C_Buffer, 1);
 
 return ret;
 }
@@ -50,7 +50,7 @@ I2C_STATUS TMP100::Get_Temperature(double &temp_c)
 	else
 		{
 			// Read 2 bytes from the temperature register to i2c object buffer
-			ret = i2c.Receive_2_Buffer(I2C_Buffer,2);
+			ret = i2c.Receive_2_Buffer(address,I2C_Buffer,2);
 
 			if ( ret == I2C_STATUS::BUSY )
 				{

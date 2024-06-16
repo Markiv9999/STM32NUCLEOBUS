@@ -21,7 +21,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+//Including classes here rather than header avoids a lot of C or C++ errors
+#include<TMP100.h>
+#include<console.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -31,7 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define TMP_Address_100 0x48<<1
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -43,6 +45,8 @@
 I2C_HandleTypeDef hi2c1;
 
 UART_HandleTypeDef huart2;
+
+I2C_STATUS ret;
 
 /* USER CODE BEGIN PV */
 
@@ -85,6 +89,7 @@ int main(void)
   /* Configure the system clock */
   SystemClock_Config();
 
+
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
@@ -93,19 +98,52 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_I2C1_Init();
+
+
   /* USER CODE BEGIN 2 */
+  //Define Console object
+  console con1(huart2);
+
+  //Define I2C Object for passing by reference (DO NOT USE I2C1 or similar as those are already defined)
+  I2C i2cobj1(hi2c1);
+
+  //Define Sensor
+  TMP100 TestSensor((uint16_t)TMP_Address_100, i2cobj1);
+  //0x60 gives the correct settings we want, see tmp100 documentation for the config register definition
+
+  con1.check_ok(TestSensor.Set_Config(0x60), "Set Config");
+  double temp;
+  char Error_Msg[40];
+
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
-  {
-    /* USER CODE END WHILE */
+	  {
+	  	ret=TestSensor.Get_Temperature(temp);
+	    if ( ret != I2C_STATUS::OK )
+	  		 {
+	  		   strcpy((char*)Error_Msg, "Error Getting Temp\r\n");
+	  		 }
+	  		else
+	  		{
+	  			// Convert temperature to decimal format
+	  			temp *= 100;
+	  			sprintf((char*)Error_Msg,
+	  					"%u.%u C\r\n",
+	  					((unsigned int)temp / 100),
+	  					((unsigned int)temp % 100));
 
-    /* USER CODE BEGIN 3 */
-  }
-  /* USER CODE END 3 */
+	  		}
+	      con1.print(Error_Msg);
+
+	  /* USER CODE END WHILE */
+
+		/* USER CODE BEGIN 3 */
+	  }
+  	  /* USER CODE END 3 */
 }
 
 /**
