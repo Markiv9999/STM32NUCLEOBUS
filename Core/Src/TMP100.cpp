@@ -13,12 +13,12 @@ TMP100::TMP100(uint16_t tempaddress, I2C &I2Ctemp) : i2c(I2Ctemp)
 address = tempaddress;
 }
 
-I2C_STATUS TMP100::Set_Config(uint8_t settings)
+I2C_STATUS TMP100::Set_Config()
 {
 // Select config registry and overwrite bits
 
 I2C_Buffer[0]=TMP_100_Config_Registry_Address;
-I2C_Buffer[1]=settings;
+I2C_Buffer[1]=TMP_100_Config_value;
 
 ret=i2c.Transmit(address,I2C_Buffer, 2);
 

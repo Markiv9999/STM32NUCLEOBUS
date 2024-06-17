@@ -88,6 +88,102 @@ I2C::~I2C() {
 
 
 
+I2C_DMA::I2C_DMA(uint16_t tempaddress, I2C_HandleTypeDef hi2c, uint32_t delay )
+{
+address=tempaddress;
+hi2c1=hi2c;
+Wait_Delay=delay;
+
+}
+
+I2C_STATUS I2C_DMA::Transmit(uint8_t *bits, uint16_t no_of_bytes)
+{
+	HAL_StatusTypeDef temp;
+	temp= HAL_I2C_Master_Transmit_DMA(&hi2c1 , address, bits, no_of_bytes);
+
+	switch(temp)
+	{
+		case HAL_OK:
+			return I2C_STATUS::OK;
+			break;
+
+		case HAL_ERROR:
+			return I2C_STATUS::ERROR;
+			break;
+
+		case HAL_BUSY:
+			return I2C_STATUS::BUSY;
+			break;
+
+		case HAL_TIMEOUT:
+			return I2C_STATUS::TIMEOUT;
+			break;
+	}
+
+	return I2C_STATUS::SHOULD_NOT_HAPPEN;
+}
+/*
+void I2C::Transmit_DMA(uint8_t *bits, int no_of_bytes)
+{
+	 if(HAL_I2C_Master_Transmit_DMA(&hi2c1 , address, bits, no_of_bytes)!= HAL_OK)
+	 {
+		 return HAL_ERROR;
+	 }
+
+	 return HAL_OK;
+
+	return HAL_I2C_Master_Transmit_DMA(&hi2c1 , address, bits, no_of_bytes);
+}
+
+*/
+
+
+
+//void I2C::initprint(UART_HandleTypeDef huartt)
+//{
+//	huart=huartt;
+//	printflag=true;
+//}
+
+
+
+
+I2C_STATUS I2C_DMA::Receive_2_Buffer(uint8_t *I2C_Buffer,uint16_t no_of_bytes)
+{
+	HAL_StatusTypeDef temp;
+		temp= HAL_I2C_Master_Receive_DMA(&hi2c1, address, I2C_Buffer, no_of_bytes);
+
+		switch(temp)
+		{
+			case HAL_OK:
+				return I2C_STATUS::OK;
+				break;
+
+			case HAL_ERROR:
+				return I2C_STATUS::ERROR;
+				break;
+
+			case HAL_BUSY:
+				return I2C_STATUS::BUSY;
+				break;
+
+			case HAL_TIMEOUT:
+				return I2C_STATUS::TIMEOUT;
+				break;
+		}
+
+		return I2C_STATUS::SHOULD_NOT_HAPPEN;
+}
+
+
+
+
+I2C_DMA::~I2C_DMA() {
+	// TODO Auto-generated destructor stub
+}
+
+
+
 
 
 /*Commented out implementations, for ease of future modifications

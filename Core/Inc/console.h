@@ -11,7 +11,7 @@
 #include "stm32l4xx_hal.h"
 #include <string.h>
 #include <stdio.h>
-#include <I2C_STATUS.h>
+
 /*
 #ifdef __cplusplus
 extern "C" {

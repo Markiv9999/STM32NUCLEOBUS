@@ -13,7 +13,7 @@
 #include "stm32l4xx_hal.h"
 #include <string.h>
 #include <stdio.h>
-#include <I2C_STATUS.h>
+
 //Includes End
 
 //Defines Here
@@ -30,7 +30,18 @@ uint32_t Wait_Delay= HAL_MAX_DELAY;
 
 
 public:
+enum class Status
+	{
+		OK,
 
+		ERROR,
+
+		BUSY,
+
+		TIMEOUT,
+
+		SHOULD_NOT_HAPPEN
+	};
 	//Constructor to initialize I2C object
 	I2C(I2C_HandleTypeDef hi2c, uint32_t delay=HAL_MAX_DELAY);
 	//Copy constructor to pass I2C object by reference to each sensor
@@ -44,6 +55,12 @@ public:
 
 	virtual ~I2C();
 };
+
+
+
+
+
+
 
 
 

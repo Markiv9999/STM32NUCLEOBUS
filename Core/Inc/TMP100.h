@@ -10,16 +10,16 @@
 
 //User defines here
 #define TMP_100_Config_Registry_Address 0x01
-
+#define TMP_100_Config_value 0x60
 #define TMP_100_Temp_Registry_Address 0x00
 //
 
 
 
 //User Includes here
-#include "stm32l4xx_hal.h"
+#include "stdint.h"
 
-#include "I2C.h"
+
 
 
 //End Includes
@@ -46,7 +46,7 @@ public:
 
 	TMP100(uint16_t tempaddress, I2C &I2Ctemp);
 	I2C_STATUS Select_Temp_Registry();
-	I2C_STATUS Set_Config(uint8_t settings = 0x60);
+	I2C_STATUS Set_Config();
 	I2C_STATUS Get_Temperature(double &temp_c);
 
 

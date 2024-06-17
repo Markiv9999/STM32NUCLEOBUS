@@ -11,17 +11,14 @@
 
 
 //Includes here
-#include "stm32l4xx_hal.h"
-#include <string.h>
-#include <stdio.h>
-#include <I2C_STATUS.h>
+#include "I2C.h"
 //Includes End
 
 //Defines Here
-
+class b: public I2C{};
 
 //Defines End
-class I2C_IT {
+class I2C_IT: public I2C {
 
 
 
