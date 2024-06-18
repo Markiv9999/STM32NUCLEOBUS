@@ -10,7 +10,7 @@
 
 TMP100::TMP100(uint16_t tempaddress, I2C &i2ctemp): i2c(i2ctemp)
 {
-
+	address=tempaddress;
 }
 
 I2C::Status TMP100::Set_Config()

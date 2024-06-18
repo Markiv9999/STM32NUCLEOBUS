@@ -16,6 +16,10 @@ Wait_Delay=delay;
 
 }
 
+I2C::I2C(I2C &I2Ctemp)
+{
+hi2c1	= I2Ctemp.hi2c1;
+}
 
 
 

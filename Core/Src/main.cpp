@@ -109,7 +109,7 @@ int main(void)
   I2C i2cobj1(hi2c1);
 
   //Define Sensor
-  TMP100 TestSensor((uint16_t)TMP_Address_100, i2cobj1);
+  TMP100 TestSensor(TMP_Address_100, i2cobj1);
   //0x60 gives the correct settings we want, see tmp100 documentation for the config register definition
 
   con1.check_ok(TestSensor.Set_Config(), "Set Config");
