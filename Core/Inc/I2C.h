@@ -18,19 +18,16 @@
 
 //Defines Here
 
-
 //Defines End
 class I2C{
 
-I2C_HandleTypeDef hi2c1;
+private:
 
 uint32_t Wait_Delay= HAL_MAX_DELAY;
 
-
-
-
 public:
-enum class Status
+I2C_HandleTypeDef hi2c1;
+typedef enum
 	{
 		OK,
 
@@ -41,26 +38,49 @@ enum class Status
 		TIMEOUT,
 
 		SHOULD_NOT_HAPPEN
-	};
+	}Status;
 	//Constructor to initialize I2C object
-	I2C(I2C_HandleTypeDef hi2c, uint32_t delay=HAL_MAX_DELAY);
-	//Copy constructor to pass I2C object by reference to each sensor
-	I2C( I2C &i2ctemp );
+	I2C(I2C_HandleTypeDef &hi2ctemp, uint32_t delay=HAL_MAX_DELAY);
+
+	virtual ~I2C();
+
 
 
 	//Operational Functions
-	virtual I2C_STATUS Transmit(uint16_t address, uint8_t (&bits)[], uint16_t no_of_bytes);
-	virtual I2C_STATUS Receive_2_Buffer(uint16_t address, uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes);
+	virtual Status Transmit(uint16_t address, uint8_t (&bits)[], uint16_t no_of_bytes);
+	virtual Status Receive_2_Buffer(uint16_t address, uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes);
 
 
-	virtual ~I2C();
+
+};
+
+
+// Interrupt ************************************************** Interrupt
+class I2C_IT:public I2C
+{
+public:
+	I2C_IT(I2C &i2ctemp);
+		//Operational Functions
+	Status Transmit(uint16_t address, uint8_t (&bits)[], uint16_t no_of_bytes) override;
+	Status Receive_2_Buffer(uint16_t address, uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes) override;
+	virtual ~I2C_IT();
 };
 
 
 
+//DMA ********************************************************* DMA
 
 
-
+class I2C_DMA:public I2C
+{
+public:
+	I2C_DMA(I2C &i2ctemp);
+		//Copy constructor to pass I2C object by reference to each sensor
+		//Operational Functions
+	Status Transmit(uint16_t address, uint8_t (&bits)[], uint16_t no_of_bytes) override;
+	Status Receive_2_Buffer(uint16_t address, uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes) override;
+	virtual ~I2C_DMA();
+};
 
 
 

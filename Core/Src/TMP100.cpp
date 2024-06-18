@@ -8,12 +8,12 @@
 #include "TMP100.h"
 
 
-TMP100::TMP100(uint16_t tempaddress, I2C &I2Ctemp) : i2c(I2Ctemp)
+TMP100::TMP100(uint16_t tempaddress, I2C &i2ctemp): i2c(i2ctemp)
 {
-address = tempaddress;
+
 }
 
-I2C_STATUS TMP100::Set_Config()
+I2C::Status TMP100::Set_Config()
 {
 // Select config registry and overwrite bits
 
@@ -25,7 +25,7 @@ ret=i2c.Transmit(address,I2C_Buffer, 2);
 return ret;
 }
 
-I2C_STATUS TMP100::Select_Temp_Registry()
+I2C::Status TMP100::Select_Temp_Registry()
 {
 // Select config registry and overwrite bits
 	I2C_Buffer[0]=TMP_100_Temp_Registry_Address;
@@ -35,15 +35,15 @@ ret=i2c.Transmit(address,I2C_Buffer, 1);
 return ret;
 }
 
-I2C_STATUS TMP100::Get_Temperature(double &temp_c)
+I2C::Status TMP100::Get_Temperature(double &temp_c)
 {   // Select temperature registry
 	ret=Select_Temp_Registry();
 	//
-	if ( ret == I2C_STATUS::BUSY )
+	if ( ret == I2C::Status::BUSY )
 		 {
 
 		 }
-	else if(ret != I2C_STATUS::OK)
+	else if(ret != I2C::Status::OK)
 		 {
 		 return ret;
 		 }
@@ -52,12 +52,12 @@ I2C_STATUS TMP100::Get_Temperature(double &temp_c)
 			// Read 2 bytes from the temperature register to i2c object buffer
 			ret = i2c.Receive_2_Buffer(address,I2C_Buffer,2);
 
-			if ( ret == I2C_STATUS::BUSY )
+			if ( ret == I2C::Status::BUSY )
 				{
 
 
 			    }
-			else if(ret != I2C_STATUS::OK)
+			else if(ret != I2C::Status::OK)
 				{
 				return ret;
 				}

@@ -46,7 +46,7 @@ I2C_HandleTypeDef hi2c1;
 
 UART_HandleTypeDef huart2;
 
-I2C_STATUS ret;
+I2C::Status ret;
 
 /* USER CODE BEGIN PV */
 
@@ -104,14 +104,15 @@ int main(void)
   //Define Console object
   console con1(huart2);
 
-  //Define I2C Object for passing by reference (DO NOT USE I2C1 or similar as those are already defined)
+  //Define I2C Object for passing by reference (DO NOT USE label I2C1 or similar as those are already defined)
+  //All the I2C classes will refer to this object
   I2C i2cobj1(hi2c1);
 
   //Define Sensor
   TMP100 TestSensor((uint16_t)TMP_Address_100, i2cobj1);
   //0x60 gives the correct settings we want, see tmp100 documentation for the config register definition
 
-  con1.check_ok(TestSensor.Set_Config(0x60), "Set Config");
+  con1.check_ok(TestSensor.Set_Config(), "Set Config");
   double temp;
   char Error_Msg[40];
 
@@ -123,7 +124,7 @@ int main(void)
   while (1)
 	  {
 	  	ret=TestSensor.Get_Temperature(temp);
-	    if ( ret != I2C_STATUS::OK )
+	    if ( ret != I2C::Status::OK )
 	  		 {
 	  		   strcpy((char*)Error_Msg, "Error Getting Temp\r\n");
 	  		 }
