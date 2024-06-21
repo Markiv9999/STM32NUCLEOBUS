@@ -53,7 +53,7 @@ typedef enum
 
 
 };
-
+/*
 
 // Interrupt ************************************************** Interrupt
 class I2C_IT:public I2C
@@ -83,6 +83,6 @@ public:
 };
 
 
-
+*/
 
 #endif /* I2C_H_ */

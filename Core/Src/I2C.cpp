@@ -85,7 +85,7 @@ I2C::Status I2C::Receive_2_Buffer(uint16_t address,uint8_t (&I2C_Buffer)[],uint1
 I2C::~I2C() {
 	// TODO Auto-generated destructor stub
 }
-
+/*
 
 // DMA ************************************************* DMA
 
@@ -160,7 +160,7 @@ I2C_DMA::~I2C_DMA() {
 
 // Interrupt Mode ************************************************************* Interrupt Mode
 
-
+/*
 I2C_IT::I2C_IT(I2C &i2ctemp):I2C(i2ctemp)
 {
 
@@ -230,5 +230,5 @@ I2C_IT::~I2C_IT(){
 	// TODO Auto-generated destructor stub
 }
 
-
+*/
 

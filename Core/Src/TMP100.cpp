@@ -8,35 +8,41 @@
 #include "TMP100.h"
 
 
-TMP100::TMP100(uint16_t tempaddress, I2C &i2ctemp): i2c(i2ctemp)
+TMP100::TMP100(uint16_t tempaddress, I2C &i2ctemp): i2c(i2ctemp),address(tempaddress)
 {
-	address=tempaddress;
+
 }
 
 I2C::Status TMP100::Set_Config()
 {
-// Select config registry and overwrite bits
 
-I2C_Buffer[0]=TMP_100_Config_Registry_Address;
-I2C_Buffer[1]=TMP_100_Config_value;
+	I2C::Status ret;
+	// Select config registry and overwrite bits
 
-ret=i2c.Transmit(address,I2C_Buffer, 2);
+	I2C_Buffer[0]=TMP_100_Config_Registry_Address;
+	I2C_Buffer[1]=TMP_100_Config_value;
 
-return ret;
+	ret=i2c.Transmit(address,I2C_Buffer, 2);
+
+	return ret;
 }
 
 I2C::Status TMP100::Select_Temp_Registry()
 {
-// Select config registry and overwrite bits
+	I2C::Status ret;
+
+	// Select config registry and overwrite bits
 	I2C_Buffer[0]=TMP_100_Temp_Registry_Address;
 
-ret=i2c.Transmit(address,I2C_Buffer, 1);
+	ret=i2c.Transmit(address,I2C_Buffer, 1);
 
-return ret;
+	return ret;
 }
 
 I2C::Status TMP100::Get_Temperature(double &temp_c)
 {   // Select temperature registry
+	I2C::Status ret;
+
 	ret=Select_Temp_Registry();
 	//
 	if ( ret == I2C::Status::BUSY )

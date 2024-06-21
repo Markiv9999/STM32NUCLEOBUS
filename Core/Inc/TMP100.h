@@ -29,8 +29,8 @@ private:
 	//Just change class of object to change between blocking(I2C),Interrupt(I2C_INT)
 	//and DMA(I2C_DMA) modes and change header file.
 	I2C &i2c;
-	I2C::Status ret;
-	uint16_t address;
+
+	const uint16_t address;
 	//Define a class buffer according to peripheral
 	uint8_t I2C_Buffer[10];
 
