@@ -19,6 +19,8 @@
 //User Includes here
 #include "stdint.h"
 #include "I2C.h"
+#include "I2C_IT.h"
+#include "I2C_DMA.h"
 
 //End Includes
 

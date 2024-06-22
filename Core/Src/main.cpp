@@ -46,10 +46,8 @@ I2C_HandleTypeDef hi2c1;
 
 UART_HandleTypeDef huart2;
 
-I2C::Status ret;
-
 /* USER CODE BEGIN PV */
-
+I2C::Status ret;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -89,7 +87,6 @@ int main(void)
   /* Configure the system clock */
   SystemClock_Config();
 
-
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
@@ -98,8 +95,6 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_I2C1_Init();
-
-
   /* USER CODE BEGIN 2 */
   //Define Console object
   console con1(huart2);
@@ -111,10 +106,19 @@ int main(void)
   //Define Sensor
   TMP100 TestSensor(TMP_Address_100, i2cobj1);
   //0x60 gives the correct settings we want, see tmp100 documentation for the config register definition
-
-  con1.check_ok(TestSensor.Set_Config(), "Set Config");
   double temp;
   char Error_Msg[40];
+  ret=TestSensor.Set_Config();
+  if ( ret != I2C::Status::OK )
+ 	  		 {
+ 	  		   strcpy((char*)Error_Msg, "Error Setting Config\r\n");
+ 	  		 }
+ 	  		else
+ 	  		{
+ 	  			strcpy((char*)Error_Msg, "Config Set\r\n");
+ 	  		}
+  con1.print(Error_Msg);
+
 
 
   /* USER CODE END 2 */
@@ -140,11 +144,11 @@ int main(void)
 	  		}
 	      con1.print(Error_Msg);
 
-	  /* USER CODE END WHILE */
+    /* USER CODE END WHILE */
 
-		/* USER CODE BEGIN 3 */
+    /* USER CODE BEGIN 3 */
 	  }
-  	  /* USER CODE END 3 */
+  /* USER CODE END 3 */
 }
 
 /**

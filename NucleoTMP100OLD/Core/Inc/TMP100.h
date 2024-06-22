@@ -23,8 +23,15 @@ extern "C" {
 
 #include "I2C_DMA.h"
 
-
 //End Includes
+
+
+//Defines Here
+
+
+
+//End Defines
+
 
 class TMP100 {
 

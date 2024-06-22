@@ -41,7 +41,7 @@ typedef enum
 	}Status;
 	//Constructor to initialize I2C object
 	I2C(I2C_HandleTypeDef &hi2ctemp, uint32_t delay=HAL_MAX_DELAY);
-	I2C(I2C &I2Ctemp);
+	//I2C(I2C &I2Ctemp);
 	virtual ~I2C();
 
 

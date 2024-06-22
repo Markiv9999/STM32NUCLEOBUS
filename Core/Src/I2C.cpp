@@ -16,12 +16,6 @@ Wait_Delay=delay;
 
 }
 
-I2C::I2C(I2C &I2Ctemp)
-{
-hi2c1	= I2Ctemp.hi2c1;
-}
-
-
 
 I2C::Status I2C::Transmit(uint16_t address,uint8_t (&bits)[], uint16_t no_of_bytes)
 {

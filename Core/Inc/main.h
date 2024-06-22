@@ -23,14 +23,13 @@
 #ifndef __MAIN_H
 #define __MAIN_H
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l4xx_hal.h"
-
+//#include "stm32l4xx_hal_conf.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
