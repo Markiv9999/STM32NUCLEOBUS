@@ -74,7 +74,7 @@ private:
 	//Define a class buffer according to peripheral
 	uint8_t I2C_Buffer[10];
 
-	I2C::Status Select_Temp_Registry();
+
 	//Temperature in signed bits
 
 
@@ -85,6 +85,7 @@ public:
 	TMP100(uint16_t tempaddress, I2C_IT &i2ctemp);
 
 	I2C::Status Set_Config();
+	I2C::Status Select_Temp_Registry();
 	I2C::Status Get_Temperature(double &temp_c);
 
 

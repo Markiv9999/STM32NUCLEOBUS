@@ -119,14 +119,33 @@ int main(void)
  	  		}
   con1.print(Error_Msg);
 
+  while(HAL_I2C_GetState(&hi2c1)!=HAL_I2C_STATE_READY)
+  {
 
+  }
+  ret=TestSensor.Select_Temp_Registry();
+	 if ( ret != I2C::Status::OK )
+				 {
+				   strcpy((char*)Error_Msg, "Error Selecting Temp Reg\r\n");
+				 }
+				else
+				{
+					// Convert temperature to decimal format
+					strcpy((char*)Error_Msg, "Temp Reg Selected\r\n");
 
+				}
+			  con1.print(Error_Msg);
+			  while(HAL_I2C_GetState(&hi2c1)!=HAL_I2C_STATE_READY)
+			   {
+
+			   }
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
 	  {
+
 	  	ret=TestSensor.Get_Temperature(temp);
 	    if ( ret != I2C::Status::OK )
 	  		 {

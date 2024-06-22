@@ -206,12 +206,10 @@ void SysTick_Handler(void)
 void I2C1_EV_IRQHandler(void)
 {
   /* USER CODE BEGIN I2C1_EV_IRQn 0 */
-	console con1(huart2);
-	con1.print("In Handler\n\r");
   /* USER CODE END I2C1_EV_IRQn 0 */
   HAL_I2C_EV_IRQHandler(&hi2c1);
   /* USER CODE BEGIN I2C1_EV_IRQn 1 */
-	con1.print("Out Handler\n\r");
+	//con1.print("Out Handler\n\r");
   /* USER CODE END I2C1_EV_IRQn 1 */
 }
 
