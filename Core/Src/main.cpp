@@ -22,8 +22,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 //Including classes here rather than header avoids a lot of C or C++ errors
-#include<TMP100.h>
-#include<console.h>
+#include"TMP100.h"
+#include"console.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

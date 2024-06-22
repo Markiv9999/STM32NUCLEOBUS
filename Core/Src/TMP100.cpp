@@ -17,10 +17,9 @@ I2C::Status TMP100::Set_Config()
 {
 
 	I2C::Status ret;
-	// Select config registry and overwrite bits
-
-	I2C_Buffer[0]=TMP_100_Config_Registry_Address;
-	I2C_Buffer[1]=TMP_100_Config_value;
+	// Select config registry and overwrite bits according to requirement
+	I2C_Buffer[0]=CONFIG_REG;
+	I2C_Buffer[1]=RESOLUTION_12_BIT;
 
 	ret=i2c.Transmit(address,I2C_Buffer, 2);
 
@@ -32,7 +31,7 @@ I2C::Status TMP100::Select_Temp_Registry()
 	I2C::Status ret;
 
 	// Select config registry and overwrite bits
-	I2C_Buffer[0]=TMP_100_Temp_Registry_Address;
+	I2C_Buffer[0]=TEMP_REG;
 
 	ret=i2c.Transmit(address,I2C_Buffer, 1);
 
@@ -41,7 +40,10 @@ I2C::Status TMP100::Select_Temp_Registry()
 
 I2C::Status TMP100::Get_Temperature(double &temp_c)
 {   // Select temperature registry
+	//Initiate temporary variables
 	I2C::Status ret;
+	int16_t val;
+
 
 	ret=Select_Temp_Registry();
 	//
@@ -58,12 +60,7 @@ I2C::Status TMP100::Get_Temperature(double &temp_c)
 			// Read 2 bytes from the temperature register to i2c object buffer
 			ret = i2c.Receive_2_Buffer(address,I2C_Buffer,2);
 
-			if ( ret == I2C::Status::BUSY )
-				{
-
-
-			    }
-			else if(ret != I2C::Status::OK)
+			if(ret != I2C::Status::OK)
 				{
 				return ret;
 				}

@@ -41,6 +41,7 @@ void console::check_ok(I2C::Status rettemp, const char (&operation_title_temp)[]
 
 		case I2C::Status::ERROR:
 			strcpy(Error_Msg,strcat(operation_title,":FAILED:ERROR\r\n"));
+			break;
 
 		case I2C::Status::BUSY:
 			strcpy(Error_Msg,strcat(operation_title,":FAILED:BUSY\r\n"));
