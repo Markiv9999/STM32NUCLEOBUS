@@ -13,7 +13,7 @@
 class I2C_DMA:public I2C
 {
 public:
-	I2C_DMA(I2C &i2ctemp);
+	I2C_DMA(I2C_HandleTypeDef &hi2ctemp);
 		//Copy constructor to pass I2C object by reference to each sensor
 		//Operational Functions
 	Status Transmit(uint16_t address, uint8_t (&bits)[], uint16_t no_of_bytes) override;

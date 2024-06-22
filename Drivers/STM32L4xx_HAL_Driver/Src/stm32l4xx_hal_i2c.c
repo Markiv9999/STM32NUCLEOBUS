@@ -4629,6 +4629,8 @@ void HAL_I2C_EV_IRQHandler(I2C_HandleTypeDef *hi2c) /* Derogation MISRAC2012-Rul
   {
     hi2c->XferISR(hi2c, itflags, itsources);
   }
+
+
 }
 
 /**

@@ -101,7 +101,7 @@ int main(void)
 
   //Define I2C Object for passing by reference (DO NOT USE label I2C1 or similar as those are already defined)
   //All the I2C classes will refer to this object
-  I2C i2cobj1(hi2c1);
+  I2C_IT i2cobj1(hi2c1);
 
   //Define Sensor
   TMP100 TestSensor(TMP_Address_100, i2cobj1);

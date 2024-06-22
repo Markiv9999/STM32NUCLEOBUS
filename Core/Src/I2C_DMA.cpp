@@ -7,10 +7,11 @@
 
 #include "I2C_DMA.h"
 
-I2C_DMA::I2C_DMA(I2C &i2ctemp) : I2C(i2ctemp)
+I2C_DMA::I2C_DMA(I2C_HandleTypeDef &hi2ctemp):I2C(hi2ctemp)
 {
-
+	hi2c1=hi2ctemp;
 }
+
 
 I2C::Status I2C_DMA::Transmit(uint16_t address,uint8_t (&bits)[], uint16_t no_of_bytes)
 {

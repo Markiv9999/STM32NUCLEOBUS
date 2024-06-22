@@ -13,11 +13,12 @@
 class I2C_IT:public I2C
 {
 public:
-	I2C_IT(I2C &i2ctemp);
+	I2C_IT(I2C_HandleTypeDef &hi2ctemp);
+	virtual ~I2C_IT();
 		//Operational Functions
 	Status Transmit(uint16_t address, uint8_t (&bits)[], uint16_t no_of_bytes) override;
 	Status Receive_2_Buffer(uint16_t address, uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes) override;
-	virtual ~I2C_IT();
+
 };
 
 

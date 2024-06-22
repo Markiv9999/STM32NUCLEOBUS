@@ -9,11 +9,10 @@
 #include "I2C_IT.h"
 
 
-I2C_IT::I2C_IT(I2C &i2ctemp):I2C(i2ctemp)
+I2C_IT::I2C_IT(I2C_HandleTypeDef &hi2ctemp):I2C(hi2ctemp)
 {
 
 }
-
 
 
 I2C::Status I2C_IT::Transmit(uint16_t address,uint8_t (&bits)[], uint16_t no_of_bytes)

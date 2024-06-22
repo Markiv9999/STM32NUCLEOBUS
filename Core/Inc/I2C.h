@@ -26,7 +26,7 @@ private:
 uint32_t Wait_Delay= HAL_MAX_DELAY;
 
 public:
-I2C_HandleTypeDef hi2c1;
+I2C_HandleTypeDef &hi2c1;
 typedef enum
 	{
 		OK,
@@ -41,7 +41,6 @@ typedef enum
 	}Status;
 	//Constructor to initialize I2C object
 	I2C(I2C_HandleTypeDef &hi2ctemp, uint32_t delay=HAL_MAX_DELAY);
-	//I2C(I2C &I2Ctemp);
 	virtual ~I2C();
 
 
