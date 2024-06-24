@@ -12,6 +12,8 @@
 // Interrupt ************************************************** Interrupt
 class I2C_IT:public I2C
 {
+
+
 public:
 	I2C_IT(I2C_HandleTypeDef &hi2ctemp);
 	virtual ~I2C_IT();

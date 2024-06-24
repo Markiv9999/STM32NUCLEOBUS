@@ -8,10 +8,12 @@
 #include "TMP100.h"
 
 
-TMP100::TMP100(uint16_t tempaddress, I2C_IT &i2ctemp): i2c(i2ctemp),address(tempaddress)
+TMP100::TMP100(uint16_t tempaddress, I2C_DMA &i2ctemp): i2c(i2ctemp),address(tempaddress)
 {
 
 }
+
+
 
 I2C::Status TMP100::Set_Config()
 {

@@ -105,11 +105,11 @@ int main(void)
 
   //Define I2C Object for passing by reference (DO NOT USE label I2C1 or similar as those are already defined)
   //All the I2C classes will refer to this object
-  I2C_IT i2cobj1(hi2c1);
+  I2C_DMA i2cobj1(hi2c1);
 
   // Initialize the hi2c1 object, activating pins, modes, interrupts queues through the I2C class
   // Ensure stm32l4xx_hal_msp.c does not have copy of HAL_I2C_MspInit()/ HAL_I2C_MspDeInit functions (compiler will warn)
-  i2cobj1.Init();
+  //i2cobj1.Init();
 
   //Define Sensor
   TMP100 TestSensor(TMP_Address_100, i2cobj1);
@@ -133,7 +133,7 @@ int main(void)
   //Wait for the interrupt/DMA based transfer to complete
   while(HAL_I2C_GetState(&hi2c1)!=HAL_I2C_STATE_READY)
   {
-
+	  con1.print("Waiting 1\r\n");
   }
 
   //Select Temperature Registry and check if the selection succeeded
@@ -152,7 +152,7 @@ int main(void)
   //Wait for the interrupt/DMA based transfer to complete
   while(HAL_I2C_GetState(&hi2c1)!=HAL_I2C_STATE_READY)
    {
-
+	  con1.print("Waiting 2\r\n");
    }
   /* USER CODE END 2 */
 
@@ -162,6 +162,10 @@ int main(void)
 	  {
 	  	//Read Temperature from Sensor
 	  	ret=TestSensor.Get_Temperature(temp);
+	  	while(HAL_I2C_GetState(&hi2c1)!=HAL_I2C_STATE_READY)
+				   {
+
+				   }
 	    if ( ret != I2C::Status::OK )
 	  		 {
 	  		   strcpy((char*)Error_Msg, "Error Getting Temp\r\n");
@@ -174,10 +178,7 @@ int main(void)
 
 	  		 }
 	    con1.print(Error_Msg);
-	    while(HAL_I2C_GetState(&hi2c1)!=HAL_I2C_STATE_READY)
-	       {
 
-	       }
 
     /* USER CODE END WHILE */
 
@@ -329,10 +330,10 @@ static void MX_DMA_Init(void)
 
   /* DMA interrupt init */
   /* DMA1_Channel6_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 1, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
   /* DMA1_Channel7_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel7_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(DMA1_Channel7_IRQn, 2, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel7_IRQn);
 
 }

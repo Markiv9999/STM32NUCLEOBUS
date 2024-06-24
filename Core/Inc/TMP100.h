@@ -68,7 +68,7 @@ private:
 
 	//Just change class of object to change between blocking(I2C),Interrupt(I2C_INT)
 	//and DMA(I2C_DMA) modes and change header file.
-	I2C_IT &i2c;
+	I2C_DMA &i2c;
 
 	const uint16_t address;
 	//Define a class buffer according to peripheral
@@ -82,7 +82,7 @@ private:
 
 public:
 
-	TMP100(uint16_t tempaddress, I2C_IT &i2ctemp);
+	TMP100(uint16_t tempaddress, I2C_DMA &i2ctemp);
 
 	I2C::Status Set_Config();
 	I2C::Status Select_Temp_Registry();
