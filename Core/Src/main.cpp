@@ -94,7 +94,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
-  MX_I2C1_Init();
+  //MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   //Define Console object
   console con1(huart2);
@@ -102,7 +102,7 @@ int main(void)
   //Define I2C Object for passing by reference (DO NOT USE label I2C1 or similar as those are already defined)
   //All the I2C classes will refer to this object
   I2C_IT i2cobj1(hi2c1);
-
+  i2cobj1.Init();
   //Define Sensor
   TMP100 TestSensor(TMP_Address_100, i2cobj1);
   //0x60 gives the correct settings we want, see tmp100 documentation for the config register definition
