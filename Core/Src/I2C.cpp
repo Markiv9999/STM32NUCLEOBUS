@@ -121,7 +121,7 @@ I2C::~I2C() {
 
 /***************************************MSP_INIT*******************************************************/
 //When using rename to HAL_I2C_MspDeInit
-void HAL_I2C_MspInit_Blocking(I2C_HandleTypeDef* hi2c)
+void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
@@ -167,7 +167,7 @@ void HAL_I2C_MspInit_Blocking(I2C_HandleTypeDef* hi2c)
 * @param hi2c: I2C handle pointer
 * @retval None
 */
-void HAL_I2C_MspDeInit_Blocking(I2C_HandleTypeDef* hi2c)
+void HAL_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
 {
   if(hi2c->Instance==I2C1)
   {
