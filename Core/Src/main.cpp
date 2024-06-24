@@ -43,6 +43,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
+DMA_HandleTypeDef hdma_i2c1_rx;
+DMA_HandleTypeDef hdma_i2c1_tx;
 
 UART_HandleTypeDef huart2;
 
@@ -53,6 +55,7 @@ I2C::Status ret;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
@@ -93,8 +96,9 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
-  //MX_I2C1_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   //Define Console object
   console con1(huart2);
@@ -102,12 +106,19 @@ int main(void)
   //Define I2C Object for passing by reference (DO NOT USE label I2C1 or similar as those are already defined)
   //All the I2C classes will refer to this object
   I2C_IT i2cobj1(hi2c1);
+
+  // Initialize the hi2c1 object, activating pins, modes, interrupts queues through the I2C class
+  // Ensure stm32l4xx_hal_msp.c does not have copy of HAL_I2C_MspInit()/ HAL_I2C_MspDeInit functions (compiler will warn)
   i2cobj1.Init();
+
   //Define Sensor
   TMP100 TestSensor(TMP_Address_100, i2cobj1);
-  //0x60 gives the correct settings we want, see tmp100 documentation for the config register definition
+
+  //Temporary variables to hold temperature and Error Messages
   double temp;
   char Error_Msg[40];
+
+  //Select the TMP100 config register and check if the selection succeeded
   ret=TestSensor.Set_Config();
   if ( ret != I2C::Status::OK )
  	  		 {
@@ -119,10 +130,13 @@ int main(void)
  	  		}
   con1.print(Error_Msg);
 
+  //Wait for the interrupt/DMA based transfer to complete
   while(HAL_I2C_GetState(&hi2c1)!=HAL_I2C_STATE_READY)
   {
 
   }
+
+  //Select Temperature Registry and check if the selection succeeded
   ret=TestSensor.Select_Temp_Registry();
 	 if ( ret != I2C::Status::OK )
 				 {
@@ -134,34 +148,36 @@ int main(void)
 					strcpy((char*)Error_Msg, "Temp Reg Selected\r\n");
 
 				}
-			  con1.print(Error_Msg);
-			  while(HAL_I2C_GetState(&hi2c1)!=HAL_I2C_STATE_READY)
-			   {
+  con1.print(Error_Msg);
+  //Wait for the interrupt/DMA based transfer to complete
+  while(HAL_I2C_GetState(&hi2c1)!=HAL_I2C_STATE_READY)
+   {
 
-			   }
+   }
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
 	  {
-
+	  	//Read Temperature from Sensor
 	  	ret=TestSensor.Get_Temperature(temp);
 	    if ( ret != I2C::Status::OK )
 	  		 {
 	  		   strcpy((char*)Error_Msg, "Error Getting Temp\r\n");
 	  		 }
 	  		else
-	  		{
+	  		 {
 	  			// Convert temperature to decimal format
 	  			temp *= 100;
-	  			sprintf((char*)Error_Msg,
-	  					"%u.%u C\r\n",
-	  					((unsigned int)temp / 100),
-	  					((unsigned int)temp % 100));
+	  			sprintf( (char*) Error_Msg,"%u.%u C\r\n",( (unsigned int) temp / 100 ),( (unsigned int) temp % 100) );
 
-	  		}
-	      con1.print(Error_Msg);
+	  		 }
+	    con1.print(Error_Msg);
+	    while(HAL_I2C_GetState(&hi2c1)!=HAL_I2C_STATE_READY)
+	       {
+
+	       }
 
     /* USER CODE END WHILE */
 
@@ -299,6 +315,25 @@ static void MX_USART2_UART_Init(void)
   /* USER CODE BEGIN USART2_Init 2 */
 
   /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel6_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
+  /* DMA1_Channel7_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel7_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel7_IRQn);
 
 }
 
