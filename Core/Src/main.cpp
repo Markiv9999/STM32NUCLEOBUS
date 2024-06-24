@@ -45,7 +45,6 @@
 I2C_HandleTypeDef hi2c1;
 DMA_HandleTypeDef hdma_i2c1_rx;
 DMA_HandleTypeDef hdma_i2c1_tx;
-
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
@@ -96,9 +95,9 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
+  //MX_DMA_Init();
   MX_USART2_UART_Init();
-  MX_I2C1_Init();
+  //MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   //Define Console object
   console con1(huart2);
@@ -109,7 +108,7 @@ int main(void)
 
   // Initialize the hi2c1 object, activating pins, modes, interrupts queues through the I2C class
   // Ensure stm32l4xx_hal_msp.c does not have copy of HAL_I2C_MspInit()/ HAL_I2C_MspDeInit functions (compiler will warn)
-  //i2cobj1.Init();
+  i2cobj1.Init();
 
   //Define Sensor
   TMP100 TestSensor(TMP_Address_100, i2cobj1);
