@@ -127,11 +127,12 @@ I2C_IT::~I2C_IT(){
 
 
 
-
+/*********************************************MSP Init IT**********************************************/
 
 
 
 //Have to either rename this to HAL_I2C_MspInit or make the HAL driver code point to HAL_I2C_MspInit_IT
+//When using rename to HAL_I2C_MspDeInit
 void HAL_I2C_MspInit_IT(I2C_HandleTypeDef* hi2c)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};

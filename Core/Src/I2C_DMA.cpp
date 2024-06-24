@@ -127,8 +127,8 @@ void I2C_DMA::Init()
 
 
 //**********************************MSP INITIALIZATION************************************************//
-
-void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
+//When using rename to HAL_I2C_MspInit
+void HAL_I2C_MspInit_DMA(I2C_HandleTypeDef* hi2c)
 {
 	  GPIO_InitTypeDef GPIO_InitStruct = {0};
 	  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
@@ -209,8 +209,8 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
 
 }
 
-
-void HAL_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
+//When using rename to HAL_I2C_MspDeInit
+void HAL_I2C_MspDeInit_DMA(I2C_HandleTypeDef* hi2c)
 {
   if(hi2c->Instance==I2C1)
   {

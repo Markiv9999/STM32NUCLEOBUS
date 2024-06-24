@@ -43,10 +43,11 @@
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
-DMA_HandleTypeDef hdma_i2c1_rx;
-DMA_HandleTypeDef hdma_i2c1_tx;
+
 UART_HandleTypeDef huart2;
 
+DMA_HandleTypeDef hdma_i2c1_tx;
+DMA_HandleTypeDef hdma_i2c1_rx;
 /* USER CODE BEGIN PV */
 I2C::Status ret;
 /* USER CODE END PV */
@@ -54,7 +55,6 @@ I2C::Status ret;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_DMA_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
@@ -95,7 +95,6 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  //MX_DMA_Init();
   MX_USART2_UART_Init();
   //MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
@@ -104,7 +103,7 @@ int main(void)
 
   //Define I2C Object for passing by reference (DO NOT USE label I2C1 or similar as those are already defined)
   //All the I2C classes will refer to this object
-  I2C_DMA i2cobj1(hi2c1);
+  I2C_Type i2cobj1(hi2c1);
 
   // Initialize the hi2c1 object, activating pins, modes, interrupts queues through the I2C class
   // Ensure stm32l4xx_hal_msp.c does not have copy of HAL_I2C_MspInit()/ HAL_I2C_MspDeInit functions (compiler will warn)
@@ -315,25 +314,6 @@ static void MX_USART2_UART_Init(void)
   /* USER CODE BEGIN USART2_Init 2 */
 
   /* USER CODE END USART2_Init 2 */
-
-}
-
-/**
-  * Enable DMA controller clock
-  */
-static void MX_DMA_Init(void)
-{
-
-  /* DMA controller clock enable */
-  __HAL_RCC_DMA1_CLK_ENABLE();
-
-  /* DMA interrupt init */
-  /* DMA1_Channel6_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 1, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
-  /* DMA1_Channel7_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel7_IRQn, 2, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel7_IRQn);
 
 }
 
