@@ -14,7 +14,6 @@
 #define TMP_100_Temp_Registry_Address 0x00
 //
 //Options I2C, I2C_IT and I2C_DMA
-#define I2C_Type I2C
 //#define I2CType I2C_IT
 //#define I2CType I2C_DMA
 
@@ -22,8 +21,7 @@
 //User Includes here
 #include "stdint.h"
 //#include "I2C.h"
-#include "I2C_IT.h"
-#include "I2C_DMA.h"
+#include "I2C.h"
 
 //End Includes
 
@@ -71,7 +69,8 @@ private:
 
 	//Just change class of object to change between blocking(I2C),Interrupt(I2C_INT)
 	//and DMA(I2C_DMA) modes and change header file.
-	I2C_Type &i2c;
+	I2C &i2c_obj;
+	bool Init_Flag;
 
 	const uint16_t address;
 	//Define a class buffer according to peripheral
@@ -85,7 +84,7 @@ private:
 
 public:
 
-	TMP100(uint16_t tempaddress, I2C_Type &i2ctemp);
+	TMP100(uint16_t tempaddress, I2C i2c_temp);
 
 	I2C::Status Set_Config();
 	I2C::Status Select_Temp_Registry();

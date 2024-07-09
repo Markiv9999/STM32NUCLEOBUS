@@ -100,17 +100,12 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //Define Console object
   console con1(huart2);
+  //Define I2C object
+  I2C i2c_obj(1);
 
-  //Define I2C Object for passing by reference (DO NOT USE label I2C1 or similar as those are already defined)
-  //All the I2C classes will refer to this object
-  I2C_Type i2cobj1(hi2c1);
-
-  // Initialize the hi2c1 object, activating pins, modes, interrupts queues through the I2C class
-  // Ensure stm32l4xx_hal_msp.c does not have copy of HAL_I2C_MspInit()/ HAL_I2C_MspDeInit functions (compiler will warn)
-  i2cobj1.Init();
 
   //Define Sensor
-  TMP100 TestSensor(TMP_Address_100, i2cobj1);
+  TMP100 TestSensor(TMP_Address_100, i2c_obj);
 
   //Temporary variables to hold temperature and Error Messages
   double temp;

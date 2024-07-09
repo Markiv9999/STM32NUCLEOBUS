@@ -6,28 +6,41 @@
  */
 
 #include "I2C.h"
-//Select I2C instance no from {1,2,3} (STM32NucleoL476 has 3 instances I2C1, I2C2, I2C3) and mode from {1=normal(100kbps), 2=fastmode(400kbps), 3=fastmodeplus(1Mbps)}
 
-I2C::I2C(I2C_HandleTypeDef &hi2ctemp, uint32_t delay):hi2c1(hi2ctemp)
+//Define the static variables here
+DMA_HandleTypeDef I2C::hdma_i2c1_tx;
+DMA_HandleTypeDef I2C::hdma_i2c1_rx;
+I2C_HandleTypeDef I2C::hi2c1;
+
+I2C::I2C( short int tempmode, uint32_t delay)
 {
 
-Wait_Delay=delay;
+	Wait_Delay=delay;
+	Mode=tempmode;
+	if (Init_Flag==false)
+	{
+		Init();
+		Init_Flag==true;
+	}
 
 }
 
 
-void I2C::Init_Step_1()
+void I2C::Init()
 {
 
 	 /* DMA controller clock enable */
 	  __HAL_RCC_DMA1_CLK_ENABLE();
-
-	  /* DMA1_Channel6_IRQn interrupt configuration */
-	  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 1, 0);
-	  HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
-	  /* DMA1_Channel7_IRQn interrupt configuration */
-	  HAL_NVIC_SetPriority(DMA1_Channel7_IRQn, 2, 0);
-	  HAL_NVIC_EnableIRQ(DMA1_Channel7_IRQn);
+	  if(Mode==3)
+	  {	  /* DMA1_Channel6_IRQn interrupt configuration */
+		  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 1, 0);
+		  HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
+	  }	  /* DMA1_Channel7_IRQn interrupt configuration */
+	  if(Mode==2)
+	  {
+		  HAL_NVIC_SetPriority(DMA1_Channel7_IRQn, 2, 0);
+		  HAL_NVIC_EnableIRQ(DMA1_Channel7_IRQn);
+	  }
 
 
 	  hi2c1.Instance = I2C1;
@@ -214,51 +227,59 @@ void I2C::Init_Step_3(I2C_HandleTypeDef* hi2c)
 
 
     /************************DMA Initialization code***********************/
-	/* I2C1 DMA Init */
-	/* I2C1_RX Init */
-	hdma_i2c1_rx.Instance = DMA1_Channel7;
-	hdma_i2c1_rx.Init.Request = DMA_REQUEST_3;
-	hdma_i2c1_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
-	hdma_i2c1_rx.Init.PeriphInc = DMA_PINC_DISABLE;
-	hdma_i2c1_rx.Init.MemInc = DMA_MINC_ENABLE;
-	hdma_i2c1_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-	hdma_i2c1_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
-	hdma_i2c1_rx.Init.Mode = DMA_NORMAL;
-	hdma_i2c1_rx.Init.Priority = DMA_PRIORITY_LOW;
-	if (HAL_DMA_Init(&hdma_i2c1_rx) != HAL_OK)
-	{
-	  Error_Handler();
-	}
+    if(Mode==3)
+    {
+		/* I2C1 DMA Init */
+		/* I2C1_RX Init */
+		hdma_i2c1_rx.Instance = DMA1_Channel7;
+		hdma_i2c1_rx.Init.Request = DMA_REQUEST_3;
+		hdma_i2c1_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+		hdma_i2c1_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+		hdma_i2c1_rx.Init.MemInc = DMA_MINC_ENABLE;
+		hdma_i2c1_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+		hdma_i2c1_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+		hdma_i2c1_rx.Init.Mode = DMA_NORMAL;
+		hdma_i2c1_rx.Init.Priority = DMA_PRIORITY_LOW;
+		if (HAL_DMA_Init(&hdma_i2c1_rx) != HAL_OK)
+		{
+		  Error_Handler("Error at I2C HAL DMA INIT RX");
+		}
 
-	__HAL_LINKDMA(hi2c,hdmarx,hdma_i2c1_rx);
+		__HAL_LINKDMA(hi2c,hdmarx,hdma_i2c1_rx);
 
-	/* I2C1_TX Init */
-	hdma_i2c1_tx.Instance = DMA1_Channel6;
-	hdma_i2c1_tx.Init.Request = DMA_REQUEST_3;
-	hdma_i2c1_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
-	hdma_i2c1_tx.Init.PeriphInc = DMA_PINC_DISABLE;
-	hdma_i2c1_tx.Init.MemInc = DMA_MINC_ENABLE;
-	hdma_i2c1_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-	hdma_i2c1_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
-	hdma_i2c1_tx.Init.Mode = DMA_NORMAL;
-	hdma_i2c1_tx.Init.Priority = DMA_PRIORITY_LOW;
-	if (HAL_DMA_Init(&hdma_i2c1_tx) != HAL_OK)
-	{
-	  Error_Handler();
-	}
+		/* I2C1_TX Init */
+		hdma_i2c1_tx.Instance = DMA1_Channel6;
+		hdma_i2c1_tx.Init.Request = DMA_REQUEST_3;
+		hdma_i2c1_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
+		hdma_i2c1_tx.Init.PeriphInc = DMA_PINC_DISABLE;
+		hdma_i2c1_tx.Init.MemInc = DMA_MINC_ENABLE;
+		hdma_i2c1_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+		hdma_i2c1_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+		hdma_i2c1_tx.Init.Mode = DMA_NORMAL;
+		hdma_i2c1_tx.Init.Priority = DMA_PRIORITY_LOW;
+		if (HAL_DMA_Init(&hdma_i2c1_tx) != HAL_OK)
+		{
+			Error_Handler("Error at I2C HAL DMA INIT TX");
+		}
 
-	__HAL_LINKDMA(hi2c,hdmatx,hdma_i2c1_tx);
+		__HAL_LINKDMA(hi2c,hdmatx,hdma_i2c1_tx);
 
+    }
 	/****************************** I2C Interrupt Init**********************/
-	/* I2C1 interrupt Init */
-	HAL_NVIC_SetPriority(I2C1_EV_IRQn, 0, 0);
-	HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
-	HAL_NVIC_SetPriority(I2C1_ER_IRQn, 0, 0);
-	HAL_NVIC_EnableIRQ(I2C1_ER_IRQn);
+	if(Mode==2)
+	{
+		/* I2C1 interrupt Init */
+		HAL_NVIC_SetPriority(I2C1_EV_IRQn, 0, 0);
+		HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
+		HAL_NVIC_SetPriority(I2C1_ER_IRQn, 0, 0);
+		HAL_NVIC_EnableIRQ(I2C1_ER_IRQn);
+	}
 
   }
 
 }
+
+
 
 //I2C MSP De-Initialization
 void Hal_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
@@ -291,44 +312,29 @@ void Hal_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
 
 
 
-I2C::Status I2C::Transmit_Blocking(uint16_t address,uint8_t (&bits)[], uint16_t no_of_bytes)
-{
-	return Check_Status( HAL_I2C_Master_Transmit(&hi2c1 , address, bits, no_of_bytes, Wait_Delay) );
+I2C::Status I2C::Transmit(uint16_t address,uint8_t (&bits)[], uint16_t no_of_bytes)
+{	if(Mode==2)
+		return Check_Status( HAL_I2C_Master_Transmit_DMA(&hi2c1 , address, bits, no_of_bytes) );
+	else if(Mode==3)
+		return Check_Status( HAL_I2C_Master_Transmit_IT(&hi2c1 , address, bits, no_of_bytes) );
+	else
+		return Check_Status( HAL_I2C_Master_Transmit(&hi2c1 , address, bits, no_of_bytes, Wait_Delay) );
 }
 
 
 
-I2C::Status I2C::Receive_Blocking(uint16_t address,uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes)
+I2C::Status I2C::Receive(uint16_t address,uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes)
 {
-	return Check_Status( HAL_I2C_Master_Receive(&hi2c1, address, I2C_Buffer, no_of_bytes, Wait_Delay) );
+	if(Mode==2)
+		return Check_Status( HAL_I2C_Master_Receive_DMA(&hi2c1, address, I2C_Buffer, no_of_bytes) );
+	else if(Mode==3)
+		return Check_Status( HAL_I2C_Master_Receive_IT(&hi2c1, address, I2C_Buffer, no_of_bytes) );
+	else
+		return Check_Status( HAL_I2C_Master_Receive(&hi2c1, address, I2C_Buffer, no_of_bytes, Wait_Delay) );
 }
 
 
-I2C::Status I2C::Transmit_Interrupt(uint16_t address,uint8_t (&bits)[], uint16_t no_of_bytes)
-{
-	return Check_Status( HAL_I2C_Master_Transmit_IT(&hi2c1 , address, bits, no_of_bytes) );
-}
-
-
-I2C::Status I2C_IT::Receive_Interrupt(uint16_t address,uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes)
-{
-	return Check_Status( HAL_I2C_Master_Receive_IT(&hi2c1, address, I2C_Buffer, no_of_bytes) );
-}
-
-
-
-I2C::Status I2C::Transmit_DMA(uint16_t address,uint8_t (&bits)[], uint16_t no_of_bytes)
-{
-	return Check_Status( HAL_I2C_Master_Transmit_DMA(&hi2c1 , address, bits, no_of_bytes) );
-}
-
-
-I2C::Status I2C::Receive_DMA(uint16_t address,uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes)
-{
-	return Check_Status( HAL_I2C_Master_Receive_DMA(&hi2c1, address, I2C_Buffer, no_of_bytes) );
-}
-
-Status I2C::Check_Status(HAL_StatusTypeDef temp)
+I2C::Status I2C::Check_Status(HAL_StatusTypeDef temp)
 {
 	switch(temp)
 	{
@@ -352,6 +358,12 @@ Status I2C::Check_Status(HAL_StatusTypeDef temp)
 	return Status::SHOULD_NOT_HAPPEN;
 
 }
+
+void I2C::Error_Handler(const char (&Msg)[])
+{
+
+}
+
 
 I2C::~I2C() {
 	// TODO Auto-generated destructor stub
