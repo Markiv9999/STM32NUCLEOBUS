@@ -45,10 +45,12 @@ typedef enum
 
 	void Init();
 
+	HAL_StatusTypeDef I2C::Init_Step_2(I2C_HandleTypeDef *hi2c);
+
 
 	//Operational Functions
-	virtual Status Transmit(uint16_t address, uint8_t (&bits)[], uint16_t no_of_bytes);
-	virtual Status Receive_2_Buffer(uint16_t address, uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes);
+	virtual Status Transmit_Blocking(uint16_t address, uint8_t (&bits)[], uint16_t no_of_bytes);
+	virtual Status Receive_Blocking(uint16_t address, uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes);
 
 
 
