@@ -1,27 +1,29 @@
 /*
- * console.c
+ * UartConsole.cpp
  *
- *  Created on: Jun 12, 2024
+ *  Created on: Jul 9, 2024
  *      Author: vikra
  */
 
-#include <console.h>
+#include <UartConsole.h>
+
+#include <UartConsole.h>
 
 
 
-console::console(UART_HandleTypeDef huarttemp)
+UartConsole::UartConsole(UART_HandleTypeDef huarttemp)
 {
 	huart=huarttemp;
 }
 
 
-void console::print(const char (&Msg)[])
+void UartConsole::print(const char (&Msg)[])
 {
 	HAL_UART_Transmit(&huart, (uint8_t*) Msg, strlen((char*)Msg), HAL_MAX_DELAY);
 }
 
 /*
-void console::check_ok(I2C::Status rettemp, const char (&operation_title_temp)[])
+void UartConsole::check_ok(I2C::Status rettemp, const char (&operation_title_temp)[])
 {
 
 	char Error_Msg[20];
@@ -50,7 +52,7 @@ void console::check_ok(I2C::Status rettemp, const char (&operation_title_temp)[]
 }
 
 */
-console::~console()
+UartConsole::~UartConsole()
 {
 
 }

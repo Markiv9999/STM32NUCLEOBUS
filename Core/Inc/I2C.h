@@ -9,8 +9,13 @@
 #define I2C_H_
 
 
-//Includes here
+//Hal Includes here
 #include "stm32l4xx_hal.h"
+#include "stm32l4xx_hal_i2c.h"
+
+
+
+
 #include <string.h>
 #include <stdio.h>
 
