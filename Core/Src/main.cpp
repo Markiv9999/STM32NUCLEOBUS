@@ -23,7 +23,7 @@
 /* USER CODE BEGIN Includes */
 //Including classes here rather than header avoids a lot of C or C++ errors
 #include"TMP100.h"
-#include"console.h"
+#include"UartConsole.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -68,33 +68,14 @@ static void MX_USART2_UART_Init(void);
 int main(void)
 {
 
-  /* USER CODE BEGIN 1 */
-
-  /* USER CODE END 1 */
-
-  /* MCU Configuration--------------------------------------------------------*/
-
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
-
-  /* USER CODE BEGIN Init */
-
-  /* USER CODE END Init */
-
-  /* Configure the system clock */
   SystemClock_Config();
 
-  /* USER CODE BEGIN SysInit */
-
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
-  /* USER CODE BEGIN 2 */
-  //Define Console object
-  console con1(huart2);
-  //Define I2C object
+
+  UartConsole con1(huart2);
+  //Initialize object selecting mode
   I2C i2c_obj(1);
 
 
@@ -107,63 +88,62 @@ int main(void)
 
   //Select the TMP100 config register and check if the selection succeeded
   ret=TestSensor.Set_Config();
+
   if ( ret != I2C::Status::OK )
- 	  		 {
- 	  		   strcpy((char*)Error_Msg, "Error Setting Config\r\n");
- 	  		 }
- 	  		else
- 	  		{
- 	  			strcpy((char*)Error_Msg, "Config Set\r\n");
- 	  		}
+  {
+	  strcpy((char*)Error_Msg, "Error Setting Config\r\n");
+  }
+  else
+  {
+	  strcpy((char*)Error_Msg, "Config Set\r\n");
+  }
+
   con1.print(Error_Msg);
-
-  //Wait for the interrupt/DMA based transfer to complete
-
 
   //Select Temperature Registry and check if the selection succeeded
   ret=TestSensor.Select_Temp_Registry();
-	 if ( ret != I2C::Status::OK )
-				 {
-				   strcpy((char*)Error_Msg, "Error Selecting Temp Reg\r\n");
-				 }
-				else
-				{
-					// Convert temperature to decimal format
-					strcpy((char*)Error_Msg, "Temp Reg Selected\r\n");
 
-				}
+  if ( ret != I2C::Status::OK )
+  {
+	  strcpy((char*)Error_Msg, "Error Setting Config\r\n");
+  }
+  else
+  {
+	  strcpy((char*)Error_Msg, "Config Set\r\n");
+  }
+
   con1.print(Error_Msg);
-  //Wait for the interrupt/DMA based transfer to complete
 
-  /* USER CODE END 2 */
-
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
   while (1)
+  {
+	  //Read Temperature from Sensor
+	  ret=TestSensor.Get_Temperature(temp);
+	  if ( ret != I2C::Status::OK )
 	  {
-	  	//Read Temperature from Sensor
-	  	ret=TestSensor.Get_Temperature(temp);
-
-	    if ( ret != I2C::Status::OK )
-	  		 {
-	  		   strcpy((char*)Error_Msg, "Error Getting Temp\r\n");
-	  		 }
-	  		else
-	  		 {
-	  			// Convert temperature to decimal format
-	  			temp *= 100;
-	  			sprintf( (char*) Error_Msg,"%u.%u C\r\n",( (unsigned int) temp / 100 ),( (unsigned int) temp % 100) );
-
-	  		 }
-	    con1.print(Error_Msg);
-
-
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
+		  strcpy((char*)Error_Msg, "Error Getting Temp\r\n");
 	  }
-  /* USER CODE END 3 */
+	  else
+	  {
+		  // Convert temperature to decimal format
+		  temp *= 100;
+		  sprintf( (char*) Error_Msg,"%u.%u C\r\n",( (unsigned int) temp / 100 ),( (unsigned int) temp % 100) );
+	  }
+	  con1.print(Error_Msg);
+  }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
   * @brief System Clock Configuration

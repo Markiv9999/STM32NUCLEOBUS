@@ -11,8 +11,6 @@
 
 //Hal Includes here
 #include "stm32l4xx_hal.h"
-#include "stm32l4xx_hal_i2c.h"
-
 
 
 
