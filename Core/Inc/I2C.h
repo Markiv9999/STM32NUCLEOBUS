@@ -46,10 +46,12 @@ typedef enum
 	I2C(I2C_HandleTypeDef &hi2ctemp, uint32_t delay=HAL_MAX_DELAY);
 	virtual ~I2C();
 
+   I2C_Blocking
 	//Initialization Functions
 	void Init_Step_1();
 	HAL_StatusTypeDef I2C::Init_Step_2(I2C_HandleTypeDef *hi2c);
 	void Init_Step_3(I2C_HandleTypeDef* hi2c);
+
 
 
 	//Operational Functions
