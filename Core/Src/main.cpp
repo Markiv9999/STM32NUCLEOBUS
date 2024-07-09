@@ -19,52 +19,21 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-//Including classes here rather than header avoids a lot of C or C++ errors
 #include"TMP100.h"
 #include"UartConsole.h"
-/* USER CODE END Includes */
 
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
 #define TMP_Address_100 0x48<<1
-/* USER CODE END PD */
 
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
 
-/* USER CODE BEGIN PV */
-I2C::Status ret;
-/* USER CODE END PV */
 
-/* Private function prototypes -----------------------------------------------*/
+I2C::Status ret;
+
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
-/* USER CODE BEGIN PFP */
 
-/* USER CODE END PFP */
 
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
-
-/**
-  * @brief  The application entry point.
-  * @retval int
-  */
 int main(void)
 {
 
@@ -75,19 +44,19 @@ int main(void)
   MX_USART2_UART_Init();
 
   UartConsole con1(huart2);
-  //Initialize object selecting mode
+  //Initialize I2C object and select mode
   I2C i2c_obj(1);
 
 
-  //Define Sensor
+  //Define Sensor and pass the I2C object to it
   TMP100 TestSensor(TMP_Address_100, i2c_obj);
 
   //Temporary variables to hold temperature and Error Messages
   double temp;
   char Error_Msg[40];
 
-  //Select the TMP100 config register and check if the selection succeeded
-  ret=TestSensor.Set_Config();
+  //Initialize the Sensor
+  ret=TestSensor.Initialize();
 
   if ( ret != I2C::Status::OK )
   {
@@ -105,11 +74,11 @@ int main(void)
 
   if ( ret != I2C::Status::OK )
   {
-	  strcpy((char*)Error_Msg, "Error Setting Config\r\n");
+	  strcpy((char*)Error_Msg, "Error Setting Temp Reg\r\n");
   }
   else
   {
-	  strcpy((char*)Error_Msg, "Config Set\r\n");
+	  strcpy((char*)Error_Msg, "Temp Reg Set\r\n");
   }
 
   con1.print(Error_Msg);
@@ -132,15 +101,6 @@ int main(void)
   }
 
 }
-
-
-
-
-
-
-
-
-
 
 
 

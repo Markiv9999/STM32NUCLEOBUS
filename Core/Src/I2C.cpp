@@ -36,7 +36,7 @@ void I2C::Init()
 		  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 1, 0);
 		  HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
 	  }	  /* DMA1_Channel7_IRQn interrupt configuration */
-	  if(Mode==2)
+	  if(Mode==3)
 	  {
 		  HAL_NVIC_SetPriority(DMA1_Channel7_IRQn, 2, 0);
 		  HAL_NVIC_EnableIRQ(DMA1_Channel7_IRQn);

@@ -86,7 +86,7 @@ public:
 
 	TMP100(uint16_t tempaddress, I2C i2c_temp);
 
-	I2C::Status Set_Config();
+	I2C::Status Initialize();
 	I2C::Status Select_Temp_Registry();
 	I2C::Status Get_Temperature(double &temp_c);
 
