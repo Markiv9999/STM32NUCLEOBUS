@@ -46,8 +46,7 @@ I2C_HandleTypeDef hi2c1;
 
 UART_HandleTypeDef huart2;
 
-DMA_HandleTypeDef hdma_i2c1_tx;
-DMA_HandleTypeDef hdma_i2c1_rx;
+
 /* USER CODE BEGIN PV */
 I2C::Status ret;
 /* USER CODE END PV */
@@ -96,7 +95,8 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
-  //MX_I2C1_Init();
+
+
   /* USER CODE BEGIN 2 */
   //Define Console object
   console con1(huart2);

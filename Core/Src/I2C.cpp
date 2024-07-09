@@ -16,13 +16,12 @@ Wait_Delay=delay;
 }
 
 
-void I2C::Init()
+void I2C::Init_Step_1()
 {
 
 	 /* DMA controller clock enable */
 	  __HAL_RCC_DMA1_CLK_ENABLE();
 
-	  /* DMA interrupt init */
 	  /* DMA1_Channel6_IRQn interrupt configuration */
 	  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 1, 0);
 	  HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
@@ -107,14 +106,14 @@ HAL_StatusTypeDef I2C::Init_Step_2(I2C_HandleTypeDef *hi2c)
 
     if (hi2c->MspInitCallback == NULL)
     {
-      hi2c->MspInitCallback = I2C_MspInit; /* Legacy weak MspInit  */
+      hi2c->MspInitCallback = I2C::Init_Step_3; /* Legacy weak MspInit  */
     }
 
     /* Init the low level hardware : GPIO, CLOCK, CORTEX...etc */
     hi2c->MspInitCallback(hi2c);
 #else
     /* Init the low level hardware : GPIO, CLOCK, CORTEX...etc */
-    I2C_MspInit(hi2c);
+    I2C::Init_Step_3(hi2c);
 #endif /* USE_HAL_I2C_REGISTER_CALLBACKS */
   }
 
@@ -182,76 +181,7 @@ HAL_StatusTypeDef I2C::Init_Step_2(I2C_HandleTypeDef *hi2c)
 
 
 
-
-
-I2C::Status I2C::Transmit(uint16_t address,uint8_t (&bits)[], uint16_t no_of_bytes)
-{
-	HAL_StatusTypeDef temp;
-	temp= HAL_I2C_Master_Transmit(&hi2c1 , address, bits, no_of_bytes, Wait_Delay);
-
-	switch(temp)
-	{
-		case HAL_OK:
-			return Status::OK;
-			break;
-
-		case HAL_ERROR:
-			return Status::ERROR;
-			break;
-
-		case HAL_BUSY:
-			return Status::BUSY;
-			break;
-
-		case HAL_TIMEOUT:
-			return Status::TIMEOUT;
-			break;
-	}
-
-	return Status::SHOULD_NOT_HAPPEN;
-}
-
-
-
-I2C::Status I2C::Receive_2_Buffer(uint16_t address,uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes)
-{
-	HAL_StatusTypeDef temp;
-		temp= HAL_I2C_Master_Receive(&hi2c1, address, I2C_Buffer, no_of_bytes, Wait_Delay);
-
-		switch(temp)
-		{
-			case HAL_OK:
-				return Status::OK;
-				break;
-
-			case HAL_ERROR:
-				return Status::ERROR;
-				break;
-
-			case HAL_BUSY:
-				return Status::BUSY;
-				break;
-
-			case HAL_TIMEOUT:
-				return Status::TIMEOUT;
-				break;
-		}
-
-		return Status::SHOULD_NOT_HAPPEN;
-}
-
-
-
-
-I2C::~I2C() {
-	// TODO Auto-generated destructor stub
-}
-
-
-
-
-
-void I2C_MspInit(I2C_HandleTypeDef* hi2c)
+void I2C::Init_Step_3(I2C_HandleTypeDef* hi2c)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
@@ -357,3 +287,75 @@ void Hal_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
   }
 
 }
+
+
+
+
+I2C::Status I2C::Transmit_Blocking(uint16_t address,uint8_t (&bits)[], uint16_t no_of_bytes)
+{
+	return Check_Status( HAL_I2C_Master_Transmit(&hi2c1 , address, bits, no_of_bytes, Wait_Delay) );
+}
+
+
+
+I2C::Status I2C::Receive_Blocking(uint16_t address,uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes)
+{
+	return Check_Status( HAL_I2C_Master_Receive(&hi2c1, address, I2C_Buffer, no_of_bytes, Wait_Delay) );
+}
+
+
+I2C::Status I2C::Transmit_Interrupt(uint16_t address,uint8_t (&bits)[], uint16_t no_of_bytes)
+{
+	return Check_Status( HAL_I2C_Master_Transmit_IT(&hi2c1 , address, bits, no_of_bytes) );
+}
+
+
+I2C::Status I2C_IT::Receive_Interrupt(uint16_t address,uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes)
+{
+	return Check_Status( HAL_I2C_Master_Receive_IT(&hi2c1, address, I2C_Buffer, no_of_bytes) );
+}
+
+
+
+I2C::Status I2C::Transmit_DMA(uint16_t address,uint8_t (&bits)[], uint16_t no_of_bytes)
+{
+	return Check_Status( HAL_I2C_Master_Transmit_DMA(&hi2c1 , address, bits, no_of_bytes) );
+}
+
+
+I2C::Status I2C::Receive_DMA(uint16_t address,uint8_t (&I2C_Buffer)[],uint16_t no_of_bytes)
+{
+	return Check_Status( HAL_I2C_Master_Receive_DMA(&hi2c1, address, I2C_Buffer, no_of_bytes) );
+}
+
+Status I2C::Check_Status(HAL_StatusTypeDef temp)
+{
+	switch(temp)
+	{
+		case HAL_OK:
+			return Status::OK;
+			break;
+
+		case HAL_ERROR:
+			return Status::ERROR;
+			break;
+
+		case HAL_BUSY:
+			return Status::BUSY;
+			break;
+
+		case HAL_TIMEOUT:
+			return Status::TIMEOUT;
+			break;
+	}
+
+	return Status::SHOULD_NOT_HAPPEN;
+
+}
+
+I2C::~I2C() {
+	// TODO Auto-generated destructor stub
+}
+
+
+
