@@ -17,11 +17,11 @@ I2C::I2C( short int tempmode, uint32_t delay)
 
 	Wait_Delay=delay;
 	Mode=tempmode;
-	if (Init_Flag==false)
+	/*if (Init_Flag==false)
 	{
 		Init();
 		Init_Flag==true;
-	}
+	}*/
 
 }
 

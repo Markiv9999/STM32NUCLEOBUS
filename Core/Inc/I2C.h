@@ -35,7 +35,7 @@ public:
 	static DMA_HandleTypeDef hdma_i2c1_tx;
 	static DMA_HandleTypeDef hdma_i2c1_rx;
 	static I2C_HandleTypeDef hi2c1;
-	bool Init_Flag=false;
+
 
 	typedef enum
 		{
